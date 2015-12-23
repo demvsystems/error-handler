@@ -2,14 +2,13 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
+use Weew\ErrorHandler\Errors\IFatalError;
+
 interface IFatalErrorHandler {
     /**
-     * @param $type
-     * @param $message
-     * @param $file
-     * @param $line
+     * @param IFatalError $error
      *
      * @return bool
      */
-    function handle($type, $message, $file, $line);
+    function handle(IFatalError $error);
 }

@@ -6,6 +6,8 @@ use PHPUnit_Framework_TestCase;
 use Tests\Weew\ErrorHandler\Stubs\BarException;
 use Tests\Weew\ErrorHandler\Stubs\FooException;
 use Weew\ErrorHandler\ErrorHandler;
+use Weew\ErrorHandler\Errors\FatalError;
+use Weew\ErrorHandler\Errors\RecoverableError;
 
 class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
     private function getNoop() {
@@ -102,7 +104,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
     public function test_handle_recoverable_error_without_handler() {
         $handler = new ErrorHandler();
         $this->assertFalse(
-            $handler->handleRecoverableError('foo', 'bar', 'yolo', 'swag')
+            $handler->handleRecoverableError(new RecoverableError(null, null, null, null))
         );
     }
 
@@ -110,7 +112,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $handler = new ErrorHandler();
         $handler->addRecoverableErrorHandler(function() {});
         $this->assertNull(
-            $handler->handleRecoverableError('foo', 'bar', 'yolo', 'swag')
+            $handler->handleRecoverableError(new RecoverableError(null, null, null, null))
         );
     }
 
@@ -120,14 +122,14 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
             return false;
         });
         $this->assertFalse(
-            $handler->handleRecoverableError('foo', 'bar', 'yolo', 'swag')
+            $handler->handleRecoverableError(new RecoverableError(null, null, null, null))
         );
     }
 
     public function test_handle_fatal_error_without_handler() {
         ob_start();
         $handler = new ErrorHandler();
-        $handler->handleFatalError('foo', 'bar', 'yolo', 'swag');
+        $handler->handleFatalError(new FatalError(null, null, null, null));
     }
 
     public function test_handle_fatal_error_with_handler() {
@@ -135,7 +137,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $handler = new ErrorHandler();
         $handler->addFatalErrorHandler(function() {});
         $this->assertNull(
-            $handler->handleFatalError('foo', 'bar', 'yolo', 'swag')
+            $handler->handleFatalError(new FatalError(null, null, null, null))
         );
     }
 
@@ -146,11 +148,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
             return false;
         });
         $this->assertFalse(
-            $handler->handleFatalError('foo', 'bar', 'yolo', 'swag')
+            $handler->handleFatalError(new FatalError(null, null, null, null))
         );
-    }
-
-    public function test_() {
-
     }
 }

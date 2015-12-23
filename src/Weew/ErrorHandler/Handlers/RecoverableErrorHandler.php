@@ -2,6 +2,8 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
+use Weew\ErrorHandler\Errors\IRecoverableError;
+
 class RecoverableErrorHandler implements IRecoverableErrorHandler {
     /**
      * @var callable
@@ -25,22 +27,23 @@ class RecoverableErrorHandler implements IRecoverableErrorHandler {
     }
 
     /**
-     * @param $number
-     * @param $string
-     * @param $file
-     * @param $line
+     * @param IRecoverableError $error
      *
      * @return bool
      */
-    public function handle($number, $string, $file, $line) {
-        $handled = $this->invokeHandler(
-            $this->getHandler(), $number, $string, $file, $line
-        );
+    public function handle(IRecoverableError $error) {
+        $handled = $this->invokeHandler($this->getHandler(), $error);
 
         return $handled === false ? false : true;
     }
 
-    protected function invokeHandler(callable $handler, $number, $string, $file, $line) {
-        return $handler($number, $string, $file, $line);
+    /**
+     * @param callable $handler
+     * @param IRecoverableError $error
+     *
+     * @return mixed
+     */
+    protected function invokeHandler(callable $handler, IRecoverableError $error) {
+        return $handler($error);
     }
 }

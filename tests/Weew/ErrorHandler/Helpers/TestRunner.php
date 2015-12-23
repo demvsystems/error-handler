@@ -29,6 +29,6 @@ class TestRunner {
     }
 
     protected function getFilePath($file) {
-        return __DIR__ . '/../errors/' . $file;
+        return __DIR__ . '/../error_tests/' . $file;
     }
 }

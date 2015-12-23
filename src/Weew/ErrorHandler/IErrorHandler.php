@@ -3,6 +3,8 @@
 namespace Weew\ErrorHandler;
 
 use Exception;
+use Weew\ErrorHandler\Errors\IFatalError;
+use Weew\ErrorHandler\Errors\IRecoverableError;
 
 interface IErrorHandler {
     /**
@@ -61,22 +63,16 @@ interface IErrorHandler {
     function handleException(Exception $ex);
 
     /**
-     * @param $number
-     * @param $string
-     * @param $file
-     * @param $line
+     * @param IRecoverableError $error
      *
-     * @return mixed
+     * @return bool|null
      */
-    function handleRecoverableError($number, $string, $file, $line);
+    function handleRecoverableError(IRecoverableError $error);
 
     /**
-     * @param $type
-     * @param $message
-     * @param $file
-     * @param $line
+     * @param IFatalError $error
      *
-     * @return mixed
+     * @return bool|null
      */
-    function handleFatalError($type, $message, $file, $line);
+    function handleFatalError(IFatalError $error);
 }

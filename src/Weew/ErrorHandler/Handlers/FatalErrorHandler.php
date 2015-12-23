@@ -2,6 +2,8 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
+use Weew\ErrorHandler\Errors\IFatalError;
+
 class FatalErrorHandler implements IFatalErrorHandler {
     /**
      * @var callable
@@ -25,31 +27,23 @@ class FatalErrorHandler implements IFatalErrorHandler {
     }
 
     /**
-     * @param $type
-     * @param $message
-     * @param $file
-     * @param $line
+     * @param IFatalError $error
      *
      * @return bool
      */
-    public function handle($type, $message, $file, $line) {
-        $handled = $this->invokeHandler(
-            $this->getHandler(), $type, $message, $file, $line
-        );
+    public function handle(IFatalError $error) {
+        $handled = $this->invokeHandler($this->getHandler(), $error);
 
         return $handled === false ? false : true;
     }
 
     /**
      * @param callable $handler
-     * @param $type
-     * @param $message
-     * @param $file
-     * @param $line
+     * @param IFatalError $error
      *
      * @return mixed
      */
-    protected function invokeHandler(callable $handler, $type, $message, $file, $line) {
-        return $handler($type, $message, $file, $line);
+    protected function invokeHandler(callable $handler, IFatalError $error) {
+        return $handler($error);
     }
 }

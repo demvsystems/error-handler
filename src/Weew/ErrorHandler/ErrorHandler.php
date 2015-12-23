@@ -3,6 +3,10 @@
 namespace Weew\ErrorHandler;
 
 use Exception;
+use Weew\ErrorHandler\Errors\FatalError;
+use Weew\ErrorHandler\Errors\IFatalError;
+use Weew\ErrorHandler\Errors\IRecoverableError;
+use Weew\ErrorHandler\Errors\RecoverableError;
 use Weew\ErrorHandler\Handlers\ExceptionHandler;
 use Weew\ErrorHandler\Handlers\FatalErrorHandler;
 use Weew\ErrorHandler\Handlers\IExceptionHandler;
@@ -70,7 +74,11 @@ class ErrorHandler implements IErrorHandler {
             return;
         }
 
-        set_error_handler([$this, 'handleRecoverableError']);
+        set_error_handler(function($number, $string, $file, $line) {
+            return $this->extractRecoverableErrorAndCallHandler(
+                $number, $string, $file, $line
+            );
+        });
         $this->isRecoverableErrorHandlingEnabled = true;
     }
 
@@ -83,7 +91,7 @@ class ErrorHandler implements IErrorHandler {
         }
 
         register_shutdown_function(function () {
-            return $this->extractFatalErrorAndCallHandlerFunction();
+            return $this->extractFatalErrorAndCallHandler();
         });
         $this->isFatalErrorHandlingEnabled = true;
     }
@@ -173,16 +181,13 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @param $number
-     * @param $string
-     * @param $file
-     * @param $line
+     * @param IRecoverableError $error
      *
      * @return bool|void
      */
-    public function handleRecoverableError($number, $string, $file, $line) {
+    public function handleRecoverableError(IRecoverableError $error) {
         foreach ($this->getRecoverableErrorHandlers() as $handler) {
-            $handled = $handler->handle($number, $string, $file, $line);
+            $handled = $handler->handle($error);
 
             if ($handled === true) {
                 return;
@@ -193,23 +198,15 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @param null $type
-     * @param null $message
-     * @param null $file
-     * @param null $line
+     * @param IFatalError $error
      *
      * @return bool|void
      */
-    public function handleFatalError(
-        $type = null,
-        $message = null,
-        $file = null,
-        $line = null
-    ) {
+    public function handleFatalError(IFatalError $error) {
         ob_get_clean();
 
         foreach ($this->getFatalErrorHandlers() as $handler) {
-            $handled = $handler->handle($type, $message, $file, $line);
+            $handled = $handler->handle($error);
 
             if ($handled === true) {
                 return;
@@ -247,20 +244,41 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
+     * @param $number
+     * @param $string
+     * @param $file
+     * @param $line
+     *
      * @return bool|void
      */
-    protected function extractFatalErrorAndCallHandlerFunction() {
+    protected function extractRecoverableErrorAndCallHandler(
+        $number,
+        $string,
+        $file,
+        $line
+    ) {
+        $error = new RecoverableError($number, $string, $file, $line);
+
+        return $this->handleRecoverableError($error);
+    }
+
+    /**
+     * @return bool|void
+     */
+    protected function extractFatalErrorAndCallHandler() {
         $error = error_get_last();
 
         if ($error === null) {
             return;
         }
 
-        $type = array_get($error, 'type');
-        $message = array_get($error, 'message');
-        $file = array_get($error, 'file');
-        $line = array_get($error, 'line');
+        $error = new FatalError(
+            array_get($error, 'type'),
+            array_get($error, 'message'),
+            array_get($error, 'file'),
+            array_get($error, 'line')
+        );
 
-        return $this->handleFatalError($type, $message, $file, $line);
+        return $this->handleFatalError($error);
     }
 }

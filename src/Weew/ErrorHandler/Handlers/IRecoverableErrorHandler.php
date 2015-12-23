@@ -2,14 +2,13 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
+use Weew\ErrorHandler\Errors\IRecoverableError;
+
 interface IRecoverableErrorHandler {
     /**
-     * @param $number
-     * @param $string
-     * @param $file
-     * @param $line
+     * @param IRecoverableError $error
      *
      * @return bool
      */
-    function handle($number, $string, $file, $line);
+    function handle(IRecoverableError $error);
 }
