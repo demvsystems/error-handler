@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Weew\ErrorHandler;
+namespace Tests\Weew\ErrorHandler\Handlers;
 
 use Exception;
 use PHPUnit_Framework_TestCase;
 use Tests\Weew\ErrorHandler\Stubs\FooException;
-use Weew\ErrorHandler\ExceptionHandler;
+use Weew\ErrorHandler\Handlers\ExceptionHandler;
 
 class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
     public function test_get_handler() {
@@ -14,7 +14,7 @@ class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($callable === $handler->getHandler());
     }
 
-    public function test_get_exception_type() {
+    public function test_get_exception_class() {
         $handler = new ExceptionHandler(function(FooException $ex) {});
         $this->assertEquals(
             FooException::class, $handler->getExceptionClass()
@@ -44,17 +44,15 @@ class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function test_handle() {
-        $handler = new ExceptionHandler(function(FooException $ex) {
-            return true;
-        });
-        $this->assertNull($handler->handle(new FooException()));
+        $handler = new ExceptionHandler(function(FooException $ex) {});
+        $this->assertTrue($handler->handle(new FooException()));
         $this->assertFalse($handler->handle(new Exception()));
 
         $handler = new ExceptionHandler(function(Exception $ex) {
             return true;
         });
-        $this->assertNull($handler->handle(new FooException()));
-        $this->assertNull($handler->handle(new Exception()));
+        $this->assertTrue($handler->handle(new FooException()));
+        $this->assertTrue($handler->handle(new Exception()));
 
         $handler = new ExceptionHandler(function(Exception $ex) {
             return false;

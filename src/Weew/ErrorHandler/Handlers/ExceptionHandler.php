@@ -1,6 +1,6 @@
 <?php
 
-namespace Weew\ErrorHandler;
+namespace Weew\ErrorHandler\Handlers;
 
 use Exception;
 use ReflectionClass;
@@ -47,11 +47,9 @@ class ExceptionHandler implements IExceptionHandler {
             return false;
         }
 
-        $result = $this->invokeHandler($this->getHandler(), $exception);
+        $handled = $this->invokeHandler($this->getHandler(), $exception);
 
-        if ($result === false) {
-            return false;
-        }
+        return $handled === false ? false : true;
     }
 
     /**

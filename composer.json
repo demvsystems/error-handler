@@ -18,9 +18,13 @@
             "Tests\\": "tests/"
         }
     },
-    "require": {},
+    "require": {
+        "weew/php-helpers-array": "^1.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "^4.7",
-        "satooshi/php-coveralls": "^0.6.1"
+        "satooshi/php-coveralls": "^0.6.1",
+        "weew/php-http-server": "^1.0",
+        "weew/php-http-client": "^1.1"
     }
 }

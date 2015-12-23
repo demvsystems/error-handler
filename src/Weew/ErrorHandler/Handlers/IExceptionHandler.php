@@ -1,6 +1,6 @@
 <?php
 
-namespace Weew\ErrorHandler;
+namespace Weew\ErrorHandler\Handlers;
 
 use Exception;
 
