@@ -2,4 +2,4 @@
 
 namespace Weew\ErrorHandler\Exceptions;
 
-class UserWarningExceptionBase extends BaseRecoverableException {}
+class UserWarningException extends BaseRecoverableException {}

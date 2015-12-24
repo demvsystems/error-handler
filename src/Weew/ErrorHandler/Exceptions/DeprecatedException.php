@@ -2,4 +2,4 @@
 
 namespace Weew\ErrorHandler\Exceptions;
 
-class DeprecatedExceptionBase extends BaseRecoverableException {}
+class DeprecatedException extends BaseRecoverableException {}
