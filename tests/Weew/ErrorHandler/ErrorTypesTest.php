@@ -4,6 +4,7 @@ namespace Tests\Weew\ErrorHandler;
 
 use PHPUnit_Framework_TestCase;
 use Weew\ErrorHandler\ErrorTypes;
+use Weew\ErrorHandler\Exceptions\ParseException;
 
 class ErrorTypesTest extends PHPUnit_Framework_TestCase {
     public function test_get_recoverable_errors() {
@@ -34,5 +35,22 @@ class ErrorTypesTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('E_ERROR', ErrorTypes::getErrorType(E_ERROR));
         $this->assertEquals('E_PARSE', ErrorTypes::getErrorType(E_PARSE));
         $this->assertEquals('E_WARNING', ErrorTypes::getErrorType(E_WARNING));
+    }
+
+    public function test_get_exception_classes_for_errors() {
+        $this->assertTrue(is_array(ErrorTypes::getExceptionClassesForErrors()));
+    }
+
+    public function test_exception_classes_for_errors_exist() {
+        foreach (ErrorTypes::getExceptionClassesForErrors() as $class) {
+            $this->assertTrue(class_exists($class));
+        }
+    }
+
+    public function test_get_exception_class_for_error() {
+        $this->assertEquals(
+            ParseException::class,
+            ErrorTypes::getExceptionClassForError(ErrorTypes::PARSE)
+        );
     }
 }

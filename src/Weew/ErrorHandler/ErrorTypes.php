@@ -2,13 +2,24 @@
 
 namespace Weew\ErrorHandler;
 
-class ErrorTypes {
-    /**
-     * All errors and warnings, as supported,
-     * except of level E_STRICT prior to PHP 5.4.0.
-     */
-    const ALL = E_ALL;
+use Exception;
+use Weew\ErrorHandler\Exceptions\CompileErrorException;
+use Weew\ErrorHandler\Exceptions\CompileWarningException;
+use Weew\ErrorHandler\Exceptions\CoreErrorException;
+use Weew\ErrorHandler\Exceptions\CoreWarningException;
+use Weew\ErrorHandler\Exceptions\DeprecatedException;
+use Weew\ErrorHandler\Exceptions\ErrorException;
+use Weew\ErrorHandler\Exceptions\NoticeException;
+use Weew\ErrorHandler\Exceptions\ParseException;
+use Weew\ErrorHandler\Exceptions\RecoverableErrorException;
+use Weew\ErrorHandler\Exceptions\StrictException;
+use Weew\ErrorHandler\Exceptions\UserDeprecatedException;
+use Weew\ErrorHandler\Exceptions\UserErrorException;
+use Weew\ErrorHandler\Exceptions\UserNoticeException;
+use Weew\ErrorHandler\Exceptions\UserWarningException;
+use Weew\ErrorHandler\Exceptions\WarningException;
 
+class ErrorTypes {
     /**
      * Fatal run-time errors. These indicate errors that can not be
      * recovered from, such as a memory allocation problem.
@@ -140,22 +151,21 @@ class ErrorTypes {
      */
     public static function getErrorTypes() {
         return [
-            E_ERROR => 'E_ERROR',
-            E_WARNING => 'E_WARNING',
-            E_PARSE => 'E_PARSE',
-            E_NOTICE => 'E_NOTICE',
-            E_CORE_ERROR => 'E_CORE_ERROR',
-            E_CORE_WARNING => 'E_CORE_WARNING',
-            E_COMPILE_ERROR => 'E_COMPILE_ERROR',
-            E_COMPILE_WARNING => 'E_COMPILE_WARNING',
-            E_USER_ERROR => 'E_USER_ERROR',
-            E_USER_WARNING => 'E_USER_WARNING',
-            E_USER_NOTICE => 'E_USER_NOTICE',
-            E_STRICT => 'E_STRICT',
-            E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
-            E_DEPRECATED => 'E_DEPRECATED',
-            E_USER_DEPRECATED => 'E_USER_DEPRECATED',
-            E_ALL => 'E_ALL',
+            self::ERROR => 'E_ERROR',
+            self::WARNING => 'E_WARNING',
+            self::PARSE => 'E_PARSE',
+            self::NOTICE => 'E_NOTICE',
+            self::CORE_ERROR => 'E_CORE_ERROR',
+            self::CORE_WARNING => 'E_CORE_WARNING',
+            self::COMPILE_ERROR => 'E_COMPILE_ERROR',
+            self::COMPILE_WARNING => 'E_COMPILE_WARNING',
+            self::USER_ERROR => 'E_USER_ERROR',
+            self::USER_WARNING => 'E_USER_WARNING',
+            self::USER_NOTICE => 'E_USER_NOTICE',
+            self::STRICT => 'E_STRICT',
+            self::RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
+            self::DEPRECATED => 'E_DEPRECATED',
+            self::USER_DEPRECATED => 'E_USER_DEPRECATED',
         ];
     }
 
@@ -166,5 +176,46 @@ class ErrorTypes {
      */
     public static function getErrorType($error) {
         return array_get(self::getErrorTypes(), $error);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getExceptionClassesForErrors() {
+        return [
+            self::ERROR => ErrorException::class,
+            self::WARNING => WarningException::class,
+            self::PARSE => ParseException::class,
+            self::NOTICE => NoticeException::class,
+            self::CORE_ERROR => CoreErrorException::class,
+            self::CORE_WARNING => CoreWarningException::class,
+            self::COMPILE_ERROR => CompileErrorException::class,
+            self::COMPILE_WARNING => CompileWarningException::class,
+            self::USER_ERROR => UserErrorException::class,
+            self::USER_WARNING => UserWarningException::class,
+            self::USER_NOTICE => UserNoticeException::class,
+            self::STRICT => StrictException::class,
+            self::RECOVERABLE_ERROR => RecoverableErrorException::class,
+            self::DEPRECATED => DeprecatedException::class,
+            self::USER_DEPRECATED => UserDeprecatedException::class,
+        ];
+    }
+
+    /**
+     * @param $error
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getExceptionClassForError($error) {
+        $class = array_get(self::getExceptionClassesForErrors(), $error);
+
+        if ($class === null) {
+            throw new Exception(
+                s('There is no custom exception for error of type %s.', $error)
+            );
+        }
+
+        return $class;
     }
 }
