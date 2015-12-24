@@ -4,32 +4,32 @@ namespace Weew\ErrorHandler\Errors;
 
 class RecoverableError implements IRecoverableError {
     /**
-     * @var mixed
+     * @var int
      */
     protected $number;
 
     /**
-     * @var mixed
+     * @var string
      */
     protected $string;
 
     /**
-     * @var mixed
+     * @var string
      */
     protected $file;
 
     /**
-     * @var mixed
+     * @var int
      */
     protected $line;
 
     /**
      * RecoverableError constructor.
      *
-     * @param $number
-     * @param $string
-     * @param $file
-     * @param $line
+     * @param int $number
+     * @param string $string
+     * @param string $file
+     * @param int $line
      */
     public function __construct($number, $string, $file, $line) {
         $this->number = $number;
@@ -39,28 +39,28 @@ class RecoverableError implements IRecoverableError {
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getNumber() {
         return $this->number;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getString() {
         return $this->string;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFile() {
         return $this->file;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getLine() {
         return $this->line;

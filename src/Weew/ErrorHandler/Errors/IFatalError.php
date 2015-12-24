@@ -9,17 +9,17 @@ interface IFatalError {
     function getType();
 
     /**
-     * @return mixed
+     * @return string
      */
     function getMessage();
 
     /**
-     * @return mixed
+     * @return string
      */
     function getFile();
 
     /**
-     * @return mixed
+     * @return int
      */
     function getLine();
 }

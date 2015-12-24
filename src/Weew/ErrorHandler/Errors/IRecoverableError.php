@@ -4,22 +4,22 @@ namespace Weew\ErrorHandler\Errors;
 
 interface IRecoverableError {
     /**
-     * @return mixed
+     * @return int
      */
     function getNumber();
 
     /**
-     * @return mixed
+     * @return string
      */
     function getString();
 
     /**
-     * @return mixed
+     * @return string
      */
     function getFile();
 
     /**
-     * @return mixed
+     * @return int
      */
     function getLine();
 }

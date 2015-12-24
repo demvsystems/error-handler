@@ -10,7 +10,7 @@ use Weew\Url\Url;
 
 class TestRunner {
     public function runInCliMode($file) {
-        return shell_exec('php -f ' . $this->getFilePath($file));
+        return shell_exec(s('php -f %s',  $this->getFilePath($file)));
     }
 
     public function runInHttpMode($file) {
@@ -29,6 +29,6 @@ class TestRunner {
     }
 
     protected function getFilePath($file) {
-        return __DIR__ . '/../error_tests/' . $file;
+        return path(__DIR__, '../error_tests', $file);
     }
 }

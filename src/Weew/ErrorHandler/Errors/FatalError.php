@@ -9,27 +9,27 @@ class FatalError implements IFatalError {
     protected $type;
 
     /**
-     * @var mixed
+     * @var string
      */
     protected $message;
 
     /**
-     * @var mixed
+     * @var string
      */
     protected $file;
 
     /**
-     * @var mixed
+     * @var int
      */
     protected $line;
 
     /**
      * FatalError constructor.
      *
-     * @param $type
-     * @param $message
-     * @param $file
-     * @param $line
+     * @param mixed $type
+     * @param string $message
+     * @param string $file
+     * @param int $line
      */
     public function __construct($type, $message, $file, $line) {
         $this->type = $type;
@@ -46,21 +46,21 @@ class FatalError implements IFatalError {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMessage() {
         return $this->message;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFile() {
         return $this->file;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getLine() {
         return $this->line;
