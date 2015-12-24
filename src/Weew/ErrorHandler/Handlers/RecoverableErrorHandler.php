@@ -2,7 +2,7 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
-use Weew\ErrorHandler\Errors\IRecoverableError;
+use Weew\ErrorHandler\Errors\IError;
 
 class RecoverableErrorHandler implements IRecoverableErrorHandler {
     /**
@@ -27,11 +27,11 @@ class RecoverableErrorHandler implements IRecoverableErrorHandler {
     }
 
     /**
-     * @param IRecoverableError $error
+     * @param IError $error
      *
      * @return bool
      */
-    public function handle(IRecoverableError $error) {
+    public function handle(IError $error) {
         $handled = $this->invokeHandler($this->getHandler(), $error);
 
         return $handled === false ? false : true;
@@ -39,11 +39,11 @@ class RecoverableErrorHandler implements IRecoverableErrorHandler {
 
     /**
      * @param callable $handler
-     * @param IRecoverableError $error
+     * @param IError $error
      *
      * @return mixed
      */
-    protected function invokeHandler(callable $handler, IRecoverableError $error) {
+    protected function invokeHandler(callable $handler, IError $error) {
         return $handler($error);
     }
 }

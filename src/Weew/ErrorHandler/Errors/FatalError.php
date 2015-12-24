@@ -2,9 +2,9 @@
 
 namespace Weew\ErrorHandler\Errors;
 
-class FatalError implements IFatalError {
+class FatalError implements IError {
     /**
-     * @var mixed
+     * @var int
      */
     protected $type;
 
@@ -24,9 +24,9 @@ class FatalError implements IFatalError {
     protected $line;
 
     /**
-     * FatalError constructor.
+     * Error constructor.
      *
-     * @param mixed $type
+     * @param int $type
      * @param string $message
      * @param string $file
      * @param int $line
@@ -39,7 +39,14 @@ class FatalError implements IFatalError {
     }
 
     /**
-     * @return mixed
+     * @return bool
+     */
+    public function isRecoverable() {
+        return false;
+    }
+
+    /**
+     * @return int
      */
     public function getType() {
         return $this->type;

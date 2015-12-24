@@ -2,16 +2,16 @@
 
 namespace Weew\ErrorHandler\Errors;
 
-class RecoverableError implements IRecoverableError {
+class RecoverableError implements IError {
     /**
      * @var int
      */
-    protected $number;
+    protected $type;
 
     /**
      * @var string
      */
-    protected $string;
+    protected $message;
 
     /**
      * @var string
@@ -24,32 +24,39 @@ class RecoverableError implements IRecoverableError {
     protected $line;
 
     /**
-     * RecoverableError constructor.
+     * Error constructor.
      *
-     * @param int $number
-     * @param string $string
+     * @param int $type
+     * @param string $message
      * @param string $file
      * @param int $line
      */
-    public function __construct($number, $string, $file, $line) {
-        $this->number = $number;
-        $this->string = $string;
+    public function __construct($type, $message, $file, $line) {
+        $this->type = $type;
+        $this->message = $message;
         $this->file = $file;
         $this->line = $line;
     }
 
     /**
+     * @return bool
+     */
+    public function isRecoverable() {
+        return true;
+    }
+
+    /**
      * @return int
      */
-    public function getNumber() {
-        return $this->number;
+    public function getType() {
+        return $this->type;
     }
 
     /**
      * @return string
      */
-    public function getString() {
-        return $this->string;
+    public function getMessage() {
+        return $this->message;
     }
 
     /**

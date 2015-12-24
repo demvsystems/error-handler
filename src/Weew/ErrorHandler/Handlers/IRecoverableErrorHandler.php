@@ -2,13 +2,13 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
-use Weew\ErrorHandler\Errors\IRecoverableError;
+use Weew\ErrorHandler\Errors\IError;
 
 interface IRecoverableErrorHandler {
     /**
-     * @param IRecoverableError $error
+     * @param IError $error
      *
      * @return bool
      */
-    function handle(IRecoverableError $error);
+    function handle(IError $error);
 }

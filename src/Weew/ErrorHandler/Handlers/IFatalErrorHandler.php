@@ -2,13 +2,13 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
-use Weew\ErrorHandler\Errors\IFatalError;
+use Weew\ErrorHandler\Errors\IError;
 
 interface IFatalErrorHandler {
     /**
-     * @param IFatalError $error
+     * @param IError $error
      *
      * @return bool
      */
-    function handle(IFatalError $error);
+    function handle(IError $error);
 }

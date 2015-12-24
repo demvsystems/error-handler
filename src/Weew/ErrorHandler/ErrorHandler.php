@@ -4,8 +4,7 @@ namespace Weew\ErrorHandler;
 
 use Exception;
 use Weew\ErrorHandler\Errors\FatalError;
-use Weew\ErrorHandler\Errors\IFatalError;
-use Weew\ErrorHandler\Errors\IRecoverableError;
+use Weew\ErrorHandler\Errors\IError;
 use Weew\ErrorHandler\Errors\RecoverableError;
 use Weew\ErrorHandler\Handlers\ExceptionHandler;
 use Weew\ErrorHandler\Handlers\FatalErrorHandler;
@@ -181,11 +180,11 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @param IRecoverableError $error
+     * @param IError $error
      *
      * @return bool|void
      */
-    public function handleRecoverableError(IRecoverableError $error) {
+    public function handleRecoverableError(IError $error) {
         foreach ($this->getRecoverableErrorHandlers() as $handler) {
             $handled = $handler->handle($error);
 
@@ -198,11 +197,11 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @param IFatalError $error
+     * @param IError $error
      *
      * @return bool|void
      */
-    public function handleFatalError(IFatalError $error) {
+    public function handleFatalError(IError $error) {
         ob_get_clean();
 
         foreach ($this->getFatalErrorHandlers() as $handler) {

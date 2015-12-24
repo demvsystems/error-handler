@@ -2,9 +2,14 @@
 
 namespace Weew\ErrorHandler\Errors;
 
-interface IFatalError {
+interface IError {
     /**
-     * @return mixed
+     * @return bool
+     */
+    function isRecoverable();
+
+    /**
+     * @return int
      */
     function getType();
 
