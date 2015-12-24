@@ -13,15 +13,29 @@ class ErrorTypesTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(count($errors) > 0);
     }
 
-    public function test_get_non_recoverable_errors() {
-        $errors = ErrorTypes::getNonRecoverableErrors();
+    public function test_get_fatal_errors() {
+        $errors = ErrorTypes::getFatalErrors();
         $this->assertTrue(is_array($errors));
         $this->assertTrue(count($errors) > 0);
     }
 
-    public function test_si_recoverable() {
+    public function test_is_recoverable() {
+        foreach (ErrorTypes::getFatalErrors() as $error) {
+            $this->assertFalse(ErrorTypes::isRecoverable($error));
+        }
+
         foreach (ErrorTypes::getRecoverableErrors() as $error) {
             $this->assertTrue(ErrorTypes::isRecoverable($error));
+        }
+    }
+
+    public function test_is_fatal() {
+        foreach (ErrorTypes::getRecoverableErrors() as $error) {
+            $this->assertFalse(ErrorTypes::isFatal($error));
+        }
+
+        foreach (ErrorTypes::getFatalErrors() as $error) {
+            $this->assertTrue(ErrorTypes::isFatal($error));
         }
     }
 

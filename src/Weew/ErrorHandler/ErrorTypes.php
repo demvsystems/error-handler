@@ -129,7 +129,7 @@ class ErrorTypes {
     /**
      * @return array
      */
-    public static function getNonRecoverableErrors() {
+    public static function getFatalErrors() {
         return [
             self::ERROR, self::PARSE, self::STRICT,
             self::CORE_ERROR, self::CORE_WARNING,
@@ -144,6 +144,15 @@ class ErrorTypes {
      */
     public static function isRecoverable($error) {
         return in_array($error, self::getRecoverableErrors());
+    }
+
+    /**
+     * @param $error
+     *
+     * @return bool
+     */
+    public static function isFatal($error) {
+        return in_array($error, self::getFatalErrors());
     }
 
     /**
