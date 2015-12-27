@@ -45,12 +45,12 @@ class RecoverableErrorsTest extends PHPUnit_Framework_TestCase {
     public function test_recoverable_unhandled_in_http_mode() {
         $runner = new TestRunner();
         $result = $runner->runInHttpMode('recoverable_unhandled.php');
-        $this->assertStringStartsWith("<br />\n<b>Fatal error</b>", $result);
+        $this->assertTrue(strpos($result, "<br />\n<b>Fatal error</b>") !== false);
     }
 
     public function test_recoverable_unhandled_converted_in_http_mode() {
         $runner = new TestRunner();
         $result = $runner->runInHttpMode('recoverable_unhandled_converted.php');
-        $this->assertStringStartsWith("<br />\n<b>Fatal error</b>", $result);
+        $this->assertTrue(strpos($result, "<br />\n<b>Fatal error</b>") !== false);
     }
 }
