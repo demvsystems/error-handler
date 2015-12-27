@@ -74,4 +74,14 @@ interface IErrorHandler {
      * @return bool|null
      */
     function handleFatalError(IError $error);
+
+    /**
+     * @param bool $convertErrorsToExceptions
+     */
+    function convertErrorsToExceptions($convertErrorsToExceptions);
+
+    /**
+     * @return bool
+     */
+    function isConvertingErrorsToExceptions();
 }

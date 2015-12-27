@@ -8,8 +8,8 @@ use Weew\ErrorHandler\Exceptions\NoticeException;
 class BaseRecoverableExceptionTest extends PHPUnit_Framework_TestCase {
     public function test_getters() {
         $ex = new NoticeException('foo', 'bar', 'yolo', 'swag');
-        $this->assertEquals('foo', $ex->getErrorNumber());
-        $this->assertEquals('bar', $ex->getErrorString());
+        $this->assertEquals('foo', $ex->getErrorType());
+        $this->assertEquals('bar', $ex->getErrorMessage());
         $this->assertEquals('yolo', $ex->getErrorFile());
         $this->assertEquals('swag', $ex->getErrorLine());
     }

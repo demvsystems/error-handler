@@ -2,4 +2,4 @@
 
 namespace Weew\ErrorHandler\Exceptions;
 
-class RecoverableErrorException extends BaseRecoverableException {}
+class RecoverableErrorException extends RecoverableException {}

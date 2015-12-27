@@ -2,6 +2,7 @@
 
 namespace Tests\Weew\ErrorHandler;
 
+use Exception;
 use PHPUnit_Framework_TestCase;
 use Weew\ErrorHandler\ErrorTypes;
 use Weew\ErrorHandler\Exceptions\ParseException;
@@ -20,22 +21,22 @@ class ErrorTypesTest extends PHPUnit_Framework_TestCase {
     }
 
     public function test_is_recoverable() {
-        foreach (ErrorTypes::getFatalErrors() as $error) {
-            $this->assertFalse(ErrorTypes::isRecoverable($error));
+        foreach (ErrorTypes::getFatalErrors() as $errorNumber) {
+            $this->assertFalse(ErrorTypes::isRecoverable($errorNumber));
         }
 
-        foreach (ErrorTypes::getRecoverableErrors() as $error) {
-            $this->assertTrue(ErrorTypes::isRecoverable($error));
+        foreach (ErrorTypes::getRecoverableErrors() as $errorNumber) {
+            $this->assertTrue(ErrorTypes::isRecoverable($errorNumber));
         }
     }
 
     public function test_is_fatal() {
-        foreach (ErrorTypes::getRecoverableErrors() as $error) {
-            $this->assertFalse(ErrorTypes::isFatal($error));
+        foreach (ErrorTypes::getRecoverableErrors() as $errorNumber) {
+            $this->assertFalse(ErrorTypes::isFatal($errorNumber));
         }
 
-        foreach (ErrorTypes::getFatalErrors() as $error) {
-            $this->assertTrue(ErrorTypes::isFatal($error));
+        foreach (ErrorTypes::getFatalErrors() as $errorNumber) {
+            $this->assertTrue(ErrorTypes::isFatal($errorNumber));
         }
     }
 
@@ -55,7 +56,7 @@ class ErrorTypesTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(is_array(ErrorTypes::getExceptionClassesForErrors()));
     }
 
-    public function test_exception_classes_for_errors_exist() {
+    public function test_get_exception_classes_for_errors_exist() {
         foreach (ErrorTypes::getExceptionClassesForErrors() as $class) {
             $this->assertTrue(class_exists($class));
         }
@@ -66,5 +67,10 @@ class ErrorTypesTest extends PHPUnit_Framework_TestCase {
             ParseException::class,
             ErrorTypes::getExceptionClassForError(ErrorTypes::PARSE)
         );
+    }
+
+    public function test_get_exception_class_for_error_missing() {
+        $this->setExpectedException(Exception::class, 'There is no custom exception for error of type "foo".');
+        ErrorTypes::getExceptionClassForError('foo');
     }
 }

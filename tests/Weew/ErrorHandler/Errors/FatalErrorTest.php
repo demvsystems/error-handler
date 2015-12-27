@@ -13,4 +13,9 @@ class FatalErrorTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('yolo', $error->getFile());
         $this->assertEquals('swag', $error->getLine());
     }
+
+    public function test_is_recoverable() {
+        $error = new FatalError('foo', 'bar', 'yolo', 'swag');
+        $this->assertFalse($error->isRecoverable());
+    }
 }

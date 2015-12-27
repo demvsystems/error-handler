@@ -2,4 +2,4 @@
 
 namespace Weew\ErrorHandler\Exceptions;
 
-class CoreErrorException extends BaseFatalException {}
+class CoreErrorException extends FatalException {}

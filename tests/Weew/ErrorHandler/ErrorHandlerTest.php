@@ -8,10 +8,20 @@ use Tests\Weew\ErrorHandler\Stubs\FooException;
 use Weew\ErrorHandler\ErrorHandler;
 use Weew\ErrorHandler\Errors\FatalError;
 use Weew\ErrorHandler\Errors\RecoverableError;
+use Weew\ErrorHandler\ErrorTypes;
+use Weew\ErrorHandler\Exceptions\ErrorException;
+use Weew\ErrorHandler\Exceptions\ParseException;
 
 class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
     private function getNoop() {
         return function() {};
+    }
+
+    public function test_convert_errors_to_exceptions() {
+        $handler = new ErrorHandler(true);
+        $this->assertTrue($handler->isConvertingErrorsToExceptions());
+        $handler->convertErrorsToExceptions(false);
+        $this->assertFalse($handler->isConvertingErrorsToExceptions());
     }
 
     public function test_enable_exception_handling() {
@@ -127,28 +137,49 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
     }
 
     public function test_handle_fatal_error_without_handler() {
-        ob_start();
         $handler = new ErrorHandler();
+
+        ob_start();
         $handler->handleFatalError(new FatalError(null, null, null, null));
     }
 
     public function test_handle_fatal_error_with_handler() {
-        ob_start();
         $handler = new ErrorHandler();
         $handler->addFatalErrorHandler(function() {});
+
+        ob_start();
         $this->assertNull(
             $handler->handleFatalError(new FatalError(null, null, null, null))
         );
     }
 
     public function test_handle_fatal_error_with_negative_handler() {
-        ob_start();
         $handler = new ErrorHandler();
         $handler->addFatalErrorHandler(function() {
             return false;
         });
+
+        ob_start();
         $this->assertFalse(
             $handler->handleFatalError(new FatalError(null, null, null, null))
+        );
+    }
+
+    public function test_handle_recoverable_error_with_error_to_exception_conversion_enabled() {
+        $handler = new ErrorHandler(true);
+        $this->setExpectedException(ErrorException::class);
+        $handler->handleRecoverableError(
+            new RecoverableError(ErrorTypes::ERROR, 'bar', 'baz', 'yolo')
+        );
+    }
+
+    public function test_handle_fatal_error_with_error_to_exception_conversion_enabled() {
+        $handler = new ErrorHandler(true);
+        $this->setExpectedException(ParseException::class);
+
+        ob_start();
+        $handler->handleFatalError(
+            new FatalError(ErrorTypes::PARSE, 'bar', 'baz', 'yolo')
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace Weew\ErrorHandler;
 
 use Exception;
+use Weew\ErrorHandler\Errors\IError;
 use Weew\ErrorHandler\Exceptions\CompileErrorException;
 use Weew\ErrorHandler\Exceptions\CompileWarningException;
 use Weew\ErrorHandler\Exceptions\CoreErrorException;
@@ -138,21 +139,21 @@ class ErrorTypes {
     }
 
     /**
-     * @param $error
+     * @param $errorNumber
      *
      * @return bool
      */
-    public static function isRecoverable($error) {
-        return in_array($error, self::getRecoverableErrors());
+    public static function isRecoverable($errorNumber) {
+        return in_array($errorNumber, self::getRecoverableErrors());
     }
 
     /**
-     * @param $error
+     * @param $errorNumber
      *
      * @return bool
      */
-    public static function isFatal($error) {
-        return in_array($error, self::getFatalErrors());
+    public static function isFatal($errorNumber) {
+        return in_array($errorNumber, self::getFatalErrors());
     }
 
     /**
@@ -179,12 +180,12 @@ class ErrorTypes {
     }
 
     /**
-     * @param $error
+     * @param $errorNumber
      *
      * @return string
      */
-    public static function getErrorType($error) {
-        return array_get(self::getErrorTypes(), $error);
+    public static function getErrorType($errorNumber) {
+        return array_get(self::getErrorTypes(), $errorNumber);
     }
 
     /**
@@ -211,20 +212,38 @@ class ErrorTypes {
     }
 
     /**
-     * @param $error
+     * @param $errorNumber
      *
      * @return mixed
      * @throws Exception
      */
-    public static function getExceptionClassForError($error) {
-        $class = array_get(self::getExceptionClassesForErrors(), $error);
+    public static function getExceptionClassForError($errorNumber) {
+        $class = array_get(self::getExceptionClassesForErrors(), $errorNumber);
 
         if ($class === null) {
             throw new Exception(
-                s('There is no custom exception for error of type %s.', $error)
+                s('There is no custom exception for error of type "%s".', $errorNumber)
             );
         }
 
         return $class;
+    }
+
+    /**
+     * @param IError $error
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public static function createExceptionForError(IError $error) {
+        $class = static::getExceptionClassForError($error->getType());
+        $ex = new $class(
+            $error->getType(),
+            $error->getMessage(),
+            $error->getFile(),
+            $error->getLine()
+        );
+
+        return $ex;
     }
 }

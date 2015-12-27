@@ -2,4 +2,4 @@
 
 namespace Weew\ErrorHandler\Exceptions;
 
-class ParseException extends BaseFatalException {}
+class ParseException extends FatalException {}

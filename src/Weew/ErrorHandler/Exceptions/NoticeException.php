@@ -2,4 +2,4 @@
 
 namespace Weew\ErrorHandler\Exceptions;
 
-class NoticeException extends BaseRecoverableException {}
+class NoticeException extends RecoverableException {}

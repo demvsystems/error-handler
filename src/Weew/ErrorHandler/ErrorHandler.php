@@ -3,9 +3,7 @@
 namespace Weew\ErrorHandler;
 
 use Exception;
-use Weew\ErrorHandler\Errors\FatalError;
 use Weew\ErrorHandler\Errors\IError;
-use Weew\ErrorHandler\Errors\RecoverableError;
 use Weew\ErrorHandler\Handlers\ExceptionHandler;
 use Weew\ErrorHandler\Handlers\FatalErrorHandler;
 use Weew\ErrorHandler\Handlers\IExceptionHandler;
@@ -14,6 +12,11 @@ use Weew\ErrorHandler\Handlers\IRecoverableErrorHandler;
 use Weew\ErrorHandler\Handlers\RecoverableErrorHandler;
 
 class ErrorHandler implements IErrorHandler {
+    /**
+     * @var ErrorConverter
+     */
+    protected $errorConverter;
+
     /**
      * @var IExceptionHandler[]
      */
@@ -45,6 +48,21 @@ class ErrorHandler implements IErrorHandler {
     protected $isFatalErrorHandlingEnabled = false;
 
     /**
+     * @var bool
+     */
+    protected $isConvertingErrorsToExceptions = false;
+
+    /**
+     * ErrorHandler constructor.
+     *
+     * @param bool $convertErrorsToExceptions
+     */
+    public function __construct($convertErrorsToExceptions = false) {
+        $this->errorConverter = $this->createErrorConverter();
+        $this->convertErrorsToExceptions($convertErrorsToExceptions);
+    }
+
+    /**
      * Enable exception, error and fatal error handling.
      */
     public function enable() {
@@ -73,9 +91,9 @@ class ErrorHandler implements IErrorHandler {
             return;
         }
 
-        set_error_handler(function($number, $string, $file, $line) {
-            return $this->extractRecoverableErrorAndCallHandler(
-                $number, $string, $file, $line
+        set_error_handler(function ($number, $string, $file, $line) {
+            return $this->errorConverter->createRecoverableErrorAndCallHandler(
+                $this, $number, $string, $file, $line
             );
         });
         $this->isRecoverableErrorHandlingEnabled = true;
@@ -90,7 +108,8 @@ class ErrorHandler implements IErrorHandler {
         }
 
         register_shutdown_function(function () {
-            return $this->extractFatalErrorAndCallHandler();
+            return $this->errorConverter
+                ->extractFatalError($this);
         });
         $this->isFatalErrorHandlingEnabled = true;
     }
@@ -138,24 +157,10 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @return IExceptionHandler[]
+     * @return bool
      */
-    public function getExceptionHandlers() {
-        return $this->exceptionHandlers;
-    }
-
-    /**
-     * @return IRecoverableErrorHandler[]
-     */
-    public function getRecoverableErrorHandlers() {
-        return $this->recoverableErrorHandlers;
-    }
-
-    /**
-     * @return IFatalErrorHandler[]
-     */
-    public function getFatalErrorHandlers() {
-        return $this->fatalErrorHandlers;
+    public function isConvertingErrorsToExceptions() {
+        return $this->isConvertingErrorsToExceptions;
     }
 
     /**
@@ -185,6 +190,11 @@ class ErrorHandler implements IErrorHandler {
      * @return bool|void
      */
     public function handleRecoverableError(IError $error) {
+        if ($this->isConvertingErrorsToExceptions()) {
+            return $this->errorConverter
+                ->convertErrorToExceptionAndCallHandler($this, $error);
+        }
+
         foreach ($this->getRecoverableErrorHandlers() as $handler) {
             $handled = $handler->handle($error);
 
@@ -204,6 +214,11 @@ class ErrorHandler implements IErrorHandler {
     public function handleFatalError(IError $error) {
         ob_get_clean();
 
+        if ($this->isConvertingErrorsToExceptions()) {
+            return $this->errorConverter
+                ->convertErrorToExceptionAndCallHandler($this, $error);
+        }
+
         foreach ($this->getFatalErrorHandlers() as $handler) {
             $handled = $handler->handle($error);
 
@@ -213,6 +228,34 @@ class ErrorHandler implements IErrorHandler {
         }
 
         return false;
+    }
+
+    /**
+     * @param bool $convertErrorsToExceptions
+     */
+    public function convertErrorsToExceptions($convertErrorsToExceptions) {
+        $this->isConvertingErrorsToExceptions = $convertErrorsToExceptions;
+    }
+
+    /**
+     * @return IExceptionHandler[]
+     */
+    public function getExceptionHandlers() {
+        return $this->exceptionHandlers;
+    }
+
+    /**
+     * @return IRecoverableErrorHandler[]
+     */
+    public function getRecoverableErrorHandlers() {
+        return $this->recoverableErrorHandlers;
+    }
+
+    /**
+     * @return IFatalErrorHandler[]
+     */
+    public function getFatalErrorHandlers() {
+        return $this->fatalErrorHandlers;
     }
 
     /**
@@ -243,41 +286,9 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @param $number
-     * @param $string
-     * @param $file
-     * @param $line
-     *
-     * @return bool|void
+     * @return ErrorConverter
      */
-    protected function extractRecoverableErrorAndCallHandler(
-        $number,
-        $string,
-        $file,
-        $line
-    ) {
-        $error = new RecoverableError($number, $string, $file, $line);
-
-        return $this->handleRecoverableError($error);
-    }
-
-    /**
-     * @return bool|void
-     */
-    protected function extractFatalErrorAndCallHandler() {
-        $error = error_get_last();
-
-        if ($error === null) {
-            return;
-        }
-
-        $error = new FatalError(
-            array_get($error, 'type'),
-            array_get($error, 'message'),
-            array_get($error, 'file'),
-            array_get($error, 'line')
-        );
-
-        return $this->handleFatalError($error);
+    protected function createErrorConverter() {
+        return new ErrorConverter();
     }
 }

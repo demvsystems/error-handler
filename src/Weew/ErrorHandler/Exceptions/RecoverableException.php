@@ -3,10 +3,12 @@
 namespace Weew\ErrorHandler\Exceptions;
 
 use Exception;
+use Weew\ErrorHandler\ErrorTypes;
 
-class BaseFatalException extends Exception {
+abstract class RecoverableException extends Exception
+    implements IErrorException{
     /**
-     * @var mixed
+     * @var int
      */
     protected $errorType;
 
@@ -21,14 +23,14 @@ class BaseFatalException extends Exception {
     protected $errorFile;
 
     /**
-     * @var int
+     * @var string
      */
     protected $errorLine;
 
     /**
-     * BaseFatalException constructor.
+     * RecoverableException constructor.
      *
-     * @param mixed $errorType
+     * @param int $errorType
      * @param string $errorMessage
      * @param string $errorFile
      * @param int $errorLine
@@ -39,23 +41,23 @@ class BaseFatalException extends Exception {
         $errorFile,
         $errorLine
     ) {
-        parent::__construct();
-
         $this->errorType = $errorType;
         $this->errorMessage = $errorMessage;
         $this->errorFile = $errorFile;
         $this->errorLine = $errorLine;
+
+        parent::__construct($this->formatErrorMessage());
     }
 
     /**
      * @return bool
      */
     public function isRecoverable() {
-        return false;
+        return true;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getErrorType() {
         return $this->errorType;
@@ -80,5 +82,18 @@ class BaseFatalException extends Exception {
      */
     public function getErrorLine() {
         return $this->errorLine;
+    }
+
+    /**
+     * @return string
+     */
+    protected function formatErrorMessage() {
+        return s(
+            '%s: %s in %s on line %s',
+            ErrorTypes::getErrorType($this->getErrorType()),
+            $this->getErrorMessage(),
+            $this->getErrorFile(),
+            $this->getErrorLine()
+        );
     }
 }

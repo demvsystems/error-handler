@@ -2,4 +2,4 @@
 
 namespace Weew\ErrorHandler\Exceptions;
 
-class ErrorException extends BaseFatalException {}
+class ErrorException extends FatalException {}
