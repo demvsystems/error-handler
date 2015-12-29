@@ -23,13 +23,13 @@ class ExceptionHandler implements IExceptionHandler {
     }
 
     /**
-     * @param Exception $exception
+     * @param Exception $ex
      *
      * @return bool
      */
-    public function supports(Exception $exception) {
-        $parents = class_parents($exception);
-        $exceptionClass = get_class($exception);
+    public function supports(Exception $ex) {
+        $parents = class_parents($ex);
+        $exceptionClass = get_class($ex);
 
         $instanceof = $exceptionClass === $this->getExceptionClass();
         $extends = is_array($parents) && in_array($this->getExceptionClass(), $parents);
@@ -38,16 +38,16 @@ class ExceptionHandler implements IExceptionHandler {
     }
 
     /**
-     * @param Exception $exception
+     * @param Exception $ex
      *
      * @return bool
      */
-    public function handle(Exception $exception) {
-        if ( ! $this->supports($exception)) {
+    public function handle(Exception $ex) {
+        if ( ! $this->supports($ex)) {
             return false;
         }
 
-        $handled = $this->invokeHandler($this->getHandler(), $exception);
+        $handled = $this->invokeHandler($this->getHandler(), $ex);
 
         return $handled === false ? false : true;
     }

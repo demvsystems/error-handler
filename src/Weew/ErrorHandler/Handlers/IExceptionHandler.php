@@ -6,16 +6,16 @@ use Exception;
 
 interface IExceptionHandler {
     /**
-     * @param Exception $exception
+     * @param Exception $ex
      *
      * @return bool
      */
-    function supports(Exception $exception);
+    function supports(Exception $ex);
 
     /**
-     * @param Exception $exception
+     * @param Exception $ex
      *
      * @return bool
      */
-    function handle(Exception $exception);
+    function handle(Exception $ex);
 }
