@@ -62,10 +62,10 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($handler->isFatalErrorHandlingEnabled());
     }
 
-    public function test_add_and_get_exception_handlers() {
+    public function test_add_and_get_exception_handler_callbacks() {
         $handler = new ErrorHandler();
         $this->assertEquals(0, count($handler->getExceptionHandlers()));
-        $handler->addExceptionHandler($this->getNoop());
+        $handler->addExceptionHandlerCallback($this->getNoop());
         $this->assertEquals(1, count($handler->getExceptionHandlers()));
     }
 
@@ -91,13 +91,13 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle_exception_with_handler() {
         $handler = new ErrorHandler();
-        $handler->addExceptionHandler(function(FooException $ex) {});
+        $handler->addExceptionHandlerCallback(function(FooException $ex) {});
         $handler->handleException(new FooException());
     }
 
     public function test_handle_exception_with_negative_handler() {
         $handler = new ErrorHandler();
-        $handler->addExceptionHandler(function(FooException $ex) {
+        $handler->addExceptionHandlerCallback(function(FooException $ex) {
             return false;
         });
         $this->setExpectedException(FooException::class);
@@ -106,7 +106,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle_exception_with_unsupported_handler() {
         $handler = new ErrorHandler();
-        $handler->addExceptionHandler(function(BarException $ex) {});
+        $handler->addExceptionHandlerCallback(function(BarException $ex) {});
         $this->setExpectedException(FooException::class);
         $handler->handleException(new FooException());
     }

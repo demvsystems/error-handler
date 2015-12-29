@@ -10,7 +10,7 @@ $errorHandler = new ErrorHandler(true);
 $errorHandler->enableFatalErrorHandling();
 $errorHandler->enableExceptionHandling();
 
-$errorHandler->addExceptionHandler(function(UserErrorException $ex) {
+$errorHandler->addExceptionHandlerCallback(function(UserErrorException $ex) {
     echo 'handled fatal converted';
 });
 

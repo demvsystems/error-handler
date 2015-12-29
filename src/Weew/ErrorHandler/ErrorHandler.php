@@ -117,7 +117,7 @@ class ErrorHandler implements IErrorHandler {
     /**
      * @param callable $handler
      */
-    public function addExceptionHandler(callable $handler) {
+    public function addExceptionHandlerCallback(callable $handler) {
         $this->exceptionHandlers[] = $this->createExceptionHandler($handler);
     }
 
