@@ -10,7 +10,7 @@ $errorHandler = new ErrorHandler(true);
 $errorHandler->enableRecoverableErrorHandling();
 $errorHandler->enableExceptionHandling();
 
-$errorHandler->addExceptionCallback(function(UserErrorException $ex) {
+$errorHandler->addExceptionHandler(function(UserErrorException $ex) {
     echo 'handled recoverable converted ';
 });
 

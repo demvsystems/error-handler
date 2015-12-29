@@ -8,7 +8,7 @@ require __DIR__ . '/../../../../vendor/autoload.php';
 $errorHandler = new ErrorHandler();
 $errorHandler->enableRecoverableErrorHandling();
 
-$errorHandler->addRecoverableErrorCallback(function() {
+$errorHandler->addRecoverableErrorHandler(function() {
     echo 'handled recoverable ';
 });
 

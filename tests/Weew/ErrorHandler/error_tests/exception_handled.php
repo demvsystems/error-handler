@@ -8,7 +8,7 @@ require __DIR__ . '/../../../../vendor/autoload.php';
 $errorHandler = new ErrorHandler();
 $errorHandler->enableExceptionHandling();
 
-$errorHandler->addExceptionCallback(function(FooException $ex) {
+$errorHandler->addExceptionHandler(function(FooException $ex) {
     echo 'handled exception';
 });
 

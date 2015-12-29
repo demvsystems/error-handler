@@ -2,9 +2,9 @@
 
 namespace Tests\Weew\ErrorHandler;
 
-use Exception;
 use PHPUnit_Framework_TestCase;
 use Weew\ErrorHandler\ErrorTypes;
+use Weew\ErrorHandler\Exceptions\MissingExceptionForErrorType;
 use Weew\ErrorHandler\Exceptions\ParseException;
 
 class ErrorTypesTest extends PHPUnit_Framework_TestCase {
@@ -70,7 +70,7 @@ class ErrorTypesTest extends PHPUnit_Framework_TestCase {
     }
 
     public function test_get_exception_class_for_error_missing() {
-        $this->setExpectedException(Exception::class, 'There is no custom exception for error of type "foo".');
+        $this->setExpectedException(MissingExceptionForErrorType::class, 'There is no custom exception for error of type "foo".');
         ErrorTypes::getExceptionClassForError('foo');
     }
 }

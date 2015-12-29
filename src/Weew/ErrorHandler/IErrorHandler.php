@@ -4,6 +4,9 @@ namespace Weew\ErrorHandler;
 
 use Exception;
 use Weew\ErrorHandler\Errors\IError;
+use Weew\ErrorHandler\Handlers\IExceptionHandler;
+use Weew\ErrorHandler\Handlers\IFatalErrorHandler;
+use Weew\ErrorHandler\Handlers\IRecoverableErrorHandler;
 
 interface IErrorHandler {
     /**
@@ -47,19 +50,19 @@ interface IErrorHandler {
     function isConvertingErrorsToExceptions();
 
     /**
-     * @param callable $handler
+     * @param callable|IExceptionHandler $handler
      */
-    function addExceptionCallback(callable $handler);
+    function addExceptionHandler($handler);
 
     /**
-     * @param callable $handler
+     * @param callable|IRecoverableErrorHandler $handler
      */
-    function addRecoverableErrorCallback(callable $handler);
+    function addRecoverableErrorHandler($handler);
 
     /**
-     * @param callable $handler
+     * @param callable|IFatalErrorHandler $handler
      */
-    function addFatalErrorHandler(callable $handler);
+    function addFatalErrorHandler($handler);
 
     /**
      * @param Exception $ex

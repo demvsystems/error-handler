@@ -2,7 +2,6 @@
 
 namespace Weew\ErrorHandler;
 
-use Exception;
 use Weew\ErrorHandler\Errors\IError;
 use Weew\ErrorHandler\Exceptions\CompileErrorException;
 use Weew\ErrorHandler\Exceptions\CompileWarningException;
@@ -10,6 +9,7 @@ use Weew\ErrorHandler\Exceptions\CoreErrorException;
 use Weew\ErrorHandler\Exceptions\CoreWarningException;
 use Weew\ErrorHandler\Exceptions\DeprecatedException;
 use Weew\ErrorHandler\Exceptions\ErrorException;
+use Weew\ErrorHandler\Exceptions\MissingExceptionForErrorType;
 use Weew\ErrorHandler\Exceptions\NoticeException;
 use Weew\ErrorHandler\Exceptions\ParseException;
 use Weew\ErrorHandler\Exceptions\RecoverableErrorException;
@@ -215,13 +215,13 @@ class ErrorTypes {
      * @param $errorNumber
      *
      * @return mixed
-     * @throws Exception
+     * @throws MissingExceptionForErrorType
      */
     public static function getExceptionClassForError($errorNumber) {
         $class = array_get(self::getExceptionClassesForErrors(), $errorNumber);
 
         if ($class === null) {
-            throw new Exception(
+            throw new MissingExceptionForErrorType(
                 s('There is no custom exception for error of type "%s".', $errorNumber)
             );
         }
@@ -233,7 +233,7 @@ class ErrorTypes {
      * @param IError $error
      *
      * @return mixed
-     * @throws Exception
+     * @throws MissingExceptionForErrorType
      */
     public static function createExceptionForError(IError $error) {
         $class = static::getExceptionClassForError($error->getType());
