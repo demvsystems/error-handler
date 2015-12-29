@@ -4,7 +4,7 @@ namespace Weew\ErrorHandler\Handlers;
 
 use Weew\ErrorHandler\Errors\IError;
 
-interface IFatalErrorHandler {
+interface INativeErrorHandler {
     /**
      * @param IError $error
      *

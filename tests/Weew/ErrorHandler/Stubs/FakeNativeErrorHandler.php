@@ -3,13 +3,13 @@
 namespace Tests\Weew\ErrorHandler\Stubs;
 
 use Weew\ErrorHandler\Errors\IError;
-use Weew\ErrorHandler\Handlers\IFatalErrorHandler;
+use Weew\ErrorHandler\Handlers\INativeErrorHandler;
 
-class FakeFatalErrorHandler implements IFatalErrorHandler {
+class FakeNativeErrorHandler implements INativeErrorHandler {
     /**
      * @param IError $error
      *
-     * @return bool|void
+     * @return bool
      */
     public function handle(IError $error) {
         return true;

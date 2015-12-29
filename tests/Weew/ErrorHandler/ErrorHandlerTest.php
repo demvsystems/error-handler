@@ -5,8 +5,7 @@ namespace Tests\Weew\ErrorHandler;
 use PHPUnit_Framework_TestCase;
 use Tests\Weew\ErrorHandler\Stubs\BarException;
 use Tests\Weew\ErrorHandler\Stubs\FakeExceptionHandler;
-use Tests\Weew\ErrorHandler\Stubs\FakeFatalErrorHandler;
-use Tests\Weew\ErrorHandler\Stubs\FakeRecoverableErrorHandler;
+use Tests\Weew\ErrorHandler\Stubs\FakeNativeErrorHandler;
 use Tests\Weew\ErrorHandler\Stubs\FooException;
 use Weew\ErrorHandler\ErrorHandler;
 use Weew\ErrorHandler\Errors\FatalError;
@@ -96,7 +95,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
     public function test_add_recoverable_error_handler_implementation() {
         $handler = new ErrorHandler();
         $this->assertEquals(0, count($handler->getRecoverableErrorHandlers()));
-        $handler->addRecoverableErrorHandler(new FakeRecoverableErrorHandler());
+        $handler->addRecoverableErrorHandler(new FakeNativeErrorHandler());
         $this->assertEquals(1, count($handler->getRecoverableErrorHandlers()));
     }
 
@@ -116,7 +115,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
     public function test_add_fatal_error_handler_implementation() {
         $handler = new ErrorHandler();
         $this->assertEquals(0, count($handler->getFatalErrorHandlers()));
-        $handler->addFatalErrorHandler(new FakeFatalErrorHandler());
+        $handler->addFatalErrorHandler(new FakeNativeErrorHandler());
         $this->assertEquals(1, count($handler->getFatalErrorHandlers()));
     }
 

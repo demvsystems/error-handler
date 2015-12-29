@@ -6,11 +6,9 @@ use Exception;
 use Weew\ErrorHandler\Errors\IError;
 use Weew\ErrorHandler\Exceptions\InvalidHandlerType;
 use Weew\ErrorHandler\Handlers\ExceptionHandler;
-use Weew\ErrorHandler\Handlers\FatalErrorHandler;
+use Weew\ErrorHandler\Handlers\NativeErrorHandler;
 use Weew\ErrorHandler\Handlers\IExceptionHandler;
-use Weew\ErrorHandler\Handlers\IFatalErrorHandler;
-use Weew\ErrorHandler\Handlers\IRecoverableErrorHandler;
-use Weew\ErrorHandler\Handlers\RecoverableErrorHandler;
+use Weew\ErrorHandler\Handlers\INativeErrorHandler;
 
 class ErrorHandler implements IErrorHandler {
     /**
@@ -24,12 +22,12 @@ class ErrorHandler implements IErrorHandler {
     protected $exceptionHandlers = [];
 
     /**
-     * @var IRecoverableErrorHandler[]
+     * @var INativeErrorHandler[]
      */
     protected $recoverableErrorHandlers = [];
 
     /**
-     * @var IFatalErrorHandler[]
+     * @var INativeErrorHandler[]
      */
     protected $fatalErrorHandlers = [];
 
@@ -136,15 +134,15 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @param callable|IRecoverableErrorHandler $handler
+     * @param callable|INativeErrorHandler $handler
      *
      * @throws InvalidHandlerType
      */
     public function addRecoverableErrorHandler($handler) {
-        if ( ! $handler instanceof IRecoverableErrorHandler && ! is_callable($handler)) {
+        if ( ! $handler instanceof INativeErrorHandler && ! is_callable($handler)) {
             throw new InvalidHandlerType(
                 s('Recoverable error handler must be a callable or an instance of %s.',
-                    IRecoverableErrorHandler::class)
+                    INativeErrorHandler::class)
             );
         }
 
@@ -156,15 +154,15 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @param callable|IFatalErrorHandler $handler
+     * @param callable|INativeErrorHandler $handler
      *
      * @throws InvalidHandlerType
      */
     public function addFatalErrorHandler($handler) {
-        if ( ! $handler instanceof IFatalErrorHandler && ! is_callable($handler)) {
+        if ( ! $handler instanceof INativeErrorHandler && ! is_callable($handler)) {
             throw new InvalidHandlerType(
                 s('Fatal error handler must be a callable or an instance of %s.',
-                    IFatalErrorHandler::class)
+                    INativeErrorHandler::class)
             );
         }
 
@@ -285,14 +283,14 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @return IRecoverableErrorHandler[]
+     * @return INativeErrorHandler[]
      */
     public function getRecoverableErrorHandlers() {
         return $this->recoverableErrorHandlers;
     }
 
     /**
-     * @return IFatalErrorHandler[]
+     * @return INativeErrorHandler[]
      */
     public function getFatalErrorHandlers() {
         return $this->fatalErrorHandlers;
@@ -310,19 +308,19 @@ class ErrorHandler implements IErrorHandler {
     /**
      * @param callable $handler
      *
-     * @return IRecoverableErrorHandler
+     * @return INativeErrorHandler
      */
     protected function createRecoverableErrorHandler(callable $handler) {
-        return new RecoverableErrorHandler($handler);
+        return new NativeErrorHandler($handler);
     }
 
     /**
      * @param callable $handler
      *
-     * @return IFatalErrorHandler
+     * @return INativeErrorHandler
      */
     protected function createFatalErrorHandler(callable $handler) {
-        return new FatalErrorHandler($handler);
+        return new NativeErrorHandler($handler);
     }
 
     /**

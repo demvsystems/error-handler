@@ -4,14 +4,14 @@ namespace Weew\ErrorHandler\Handlers;
 
 use Weew\ErrorHandler\Errors\IError;
 
-class FatalErrorHandler implements IFatalErrorHandler {
+class NativeErrorHandler implements INativeErrorHandler {
     /**
      * @var callable
      */
     protected $handler;
 
     /**
-     * FatalErrorHandler constructor.
+     * NativeErrorHandler constructor.
      *
      * @param callable $handler
      */
