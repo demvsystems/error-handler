@@ -65,6 +65,13 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($handler->isFatalErrorHandlingEnabled());
     }
 
+    public function test_enable_error_handling() {
+        $handler = new ErrorHandler();
+        $this->assertFalse($handler->isErrorHandlingEnabled());
+        $handler->enableErrorHandling();
+        $this->assertTrue($handler->isErrorHandlingEnabled());
+    }
+
     public function test_add_and_get_exception_handlers() {
         $handler = new ErrorHandler();
         $this->assertEquals(0, count($handler->getExceptionHandlers()));
@@ -83,6 +90,15 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $handler = new ErrorHandler();
         $this->setExpectedException(InvalidHandlerType::class);
         $handler->addExceptionHandler('foo');
+    }
+
+    public function test_add_and_get_error_handler() {
+        $handler = new ErrorHandler();
+        $this->assertEquals(0, count($handler->getRecoverableErrorHandlers()));
+        $this->assertEquals(0, count($handler->getFatalErrorHandlers()));
+        $handler->addErrorHandler($this->getNoop());
+        $this->assertEquals(1, count($handler->getRecoverableErrorHandlers()));
+        $this->assertEquals(1, count($handler->getFatalErrorHandlers()));
     }
 
     public function test_add_and_get_recoverable_error_handlers() {
@@ -223,5 +239,25 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $handler->handleFatalError(
             new FatalError(ErrorTypes::PARSE, 'bar', 'baz', 'yolo')
         );
+    }
+
+    public function test_handle_error_with_fatal_error() {
+        $handler = new ErrorHandler();
+        $fatalError = new FatalError(ErrorTypes::PARSE, 'foo', 'bar', 'baz');
+
+        ob_start();
+        $this->assertFalse($handler->handleError($fatalError));
+        $handler->addFatalErrorHandler($this->getNoop());
+        ob_start();
+        $this->assertNull($handler->handleError($fatalError));
+    }
+
+    public function test_handle_error_with_recoverable_error() {
+        $handler = new ErrorHandler();
+        $recoverableError = new RecoverableError(ErrorTypes::ERROR, 'foo', 'bar', 'baz');
+
+        $this->assertFalse($handler->handleError($recoverableError));
+        $handler->addRecoverableErrorHandler($this->getNoop());
+        $this->assertNull($handler->handleError($recoverableError));
     }
 }

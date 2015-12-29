@@ -19,6 +19,11 @@ interface IErrorHandler {
     function enableExceptionHandling();
 
     /**
+     * Enable handling of native PHP errors.
+     */
+    function enableErrorHandling();
+
+    /**
      * Handle non fatal errors.
      */
     function enableRecoverableErrorHandling();
@@ -46,19 +51,37 @@ interface IErrorHandler {
     /**
      * @return bool
      */
+    function isErrorHandlingEnabled();
+
+    /**
+     * @return bool
+     */
     function isConvertingErrorsToExceptions();
 
     /**
+     * Add an error handler for exceptions.
+     *
      * @param callable|IExceptionHandler $handler
      */
     function addExceptionHandler($handler);
 
     /**
+     * Add an error handler for all kinds of native PHP errors.
+     *
+     * @param callable|INativeErrorHandler $handler
+     */
+    function addErrorHandler($handler);
+
+    /**
+     * Add an error handler for recoverable, native PHP errors.
+     *
      * @param callable|INativeErrorHandler $handler
      */
     function addRecoverableErrorHandler($handler);
 
     /**
+     * Add an error handler for fatal, native PHP errors.
+     *
      * @param callable|INativeErrorHandler $handler
      */
     function addFatalErrorHandler($handler);
@@ -67,6 +90,13 @@ interface IErrorHandler {
      * @param Exception $ex
      */
     function handleException(Exception $ex);
+
+    /**
+     * @param IError $error
+     *
+     * @return bool|null
+     */
+    function handleError(IError $error);
 
     /**
      * @param IError $error

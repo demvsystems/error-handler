@@ -66,8 +66,7 @@ class ErrorHandler implements IErrorHandler {
      */
     public function enable() {
         $this->enableExceptionHandling();
-        $this->enableRecoverableErrorHandling();
-        $this->enableFatalErrorHandling();
+        $this->enableErrorHandling();
     }
 
     /**
@@ -80,6 +79,14 @@ class ErrorHandler implements IErrorHandler {
 
         set_exception_handler([$this, 'handleException']);
         $this->isExceptionHandlingEnabled = true;
+    }
+
+    /**
+     * Enable handling of native PHP errors.
+     */
+    public function enableErrorHandling() {
+        $this->enableRecoverableErrorHandling();
+        $this->enableFatalErrorHandling();
     }
 
     /**
@@ -114,6 +121,8 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
+     * Add an error handler for exceptions.
+     *
      * @param callable|IExceptionHandler $handler
      *
      * @throws InvalidHandlerType
@@ -134,6 +143,20 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
+     * Add an error handler for all kinds of native PHP errors.
+     *
+     * @param callable|INativeErrorHandler $handler
+     *
+     * @throws InvalidHandlerType
+     */
+    public function addErrorHandler($handler) {
+        $this->addRecoverableErrorHandler($handler);
+        $this->addFatalErrorHandler($handler);
+    }
+
+    /**
+     * Add an error handler only recoverable, native PHP errors.
+     *
      * @param callable|INativeErrorHandler $handler
      *
      * @throws InvalidHandlerType
@@ -154,6 +177,8 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
+     * Add an error handler for fatal, native PHP errors.
+     *
      * @param callable|INativeErrorHandler $handler
      *
      * @throws InvalidHandlerType
@@ -178,6 +203,14 @@ class ErrorHandler implements IErrorHandler {
      */
     public function isExceptionHandlingEnabled() {
         return $this->isExceptionHandlingEnabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isErrorHandlingEnabled() {
+        return $this->isRecoverableErrorHandlingEnabled()
+            && $this->isFatalErrorHandlingEnabled();
     }
 
     /**
@@ -220,6 +253,19 @@ class ErrorHandler implements IErrorHandler {
         }
 
         throw $ex;
+    }
+
+    /**
+     * @param IError $error
+     *
+     * @return bool|void
+     */
+    public function handleError(IError $error) {
+        if ($error->isRecoverable()) {
+            return $this->handleRecoverableError($error);
+        } else {
+            return $this->handleFatalError($error);
+        }
     }
 
     /**
