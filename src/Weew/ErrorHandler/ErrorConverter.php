@@ -33,7 +33,7 @@ class ErrorConverter {
      *
      * @return bool|void
      */
-    public function extractFatalError(IErrorHandler $handler) {
+    public function extractFatalErrorAndCallHandler(IErrorHandler $handler) {
         $error = $this->getLastError();
 
         if ($error === null) {

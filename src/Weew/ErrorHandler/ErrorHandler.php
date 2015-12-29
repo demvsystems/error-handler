@@ -109,7 +109,7 @@ class ErrorHandler implements IErrorHandler {
 
         register_shutdown_function(function () {
             return $this->errorConverter
-                ->extractFatalError($this);
+                ->extractFatalErrorAndCallHandler($this);
         });
         $this->isFatalErrorHandlingEnabled = true;
     }

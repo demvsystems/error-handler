@@ -25,7 +25,7 @@ class ErrorConverterTest extends PHPUnit_Framework_TestCase {
         $converter = new ErrorConverter();
         $handler = new ErrorHandler(true);
         $this->assertNull(
-            $converter->extractFatalError($handler)
+            $converter->extractFatalErrorAndCallHandler($handler)
         );
     }
 
@@ -35,7 +35,7 @@ class ErrorConverterTest extends PHPUnit_Framework_TestCase {
         $this->setExpectedException(ParseException::class);
 
         ob_start();
-        $converter->extractFatalError($handler);
+        $converter->extractFatalErrorAndCallHandler($handler);
     }
     
     public function test_convert_error_to_exception_and_call_handler() {

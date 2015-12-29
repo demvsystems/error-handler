@@ -42,6 +42,11 @@ interface IErrorHandler {
     function isFatalErrorHandlingEnabled();
 
     /**
+     * @return bool
+     */
+    function isConvertingErrorsToExceptions();
+
+    /**
      * @param callable $handler
      */
     function addExceptionHandler(callable $handler);
@@ -79,9 +84,4 @@ interface IErrorHandler {
      * @param bool $convertErrorsToExceptions
      */
     function convertErrorsToExceptions($convertErrorsToExceptions);
-
-    /**
-     * @return bool
-     */
-    function isConvertingErrorsToExceptions();
 }
