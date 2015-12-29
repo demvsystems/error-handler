@@ -121,6 +121,42 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
+     * @return bool
+     */
+    public function isExceptionHandlingEnabled() {
+        return $this->isExceptionHandlingEnabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isErrorHandlingEnabled() {
+        return $this->isRecoverableErrorHandlingEnabled()
+        && $this->isFatalErrorHandlingEnabled();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRecoverableErrorHandlingEnabled() {
+        return $this->isRecoverableErrorHandlingEnabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFatalErrorHandlingEnabled() {
+        return $this->isFatalErrorHandlingEnabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConvertingErrorsToExceptions() {
+        return $this->isConvertingErrorsToExceptions;
+    }
+
+    /**
      * Add an error handler for exceptions.
      *
      * @param callable|IExceptionHandler $handler
@@ -196,42 +232,6 @@ class ErrorHandler implements IErrorHandler {
         }
 
         $this->fatalErrorHandlers[] = $handler;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isExceptionHandlingEnabled() {
-        return $this->isExceptionHandlingEnabled;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isErrorHandlingEnabled() {
-        return $this->isRecoverableErrorHandlingEnabled()
-            && $this->isFatalErrorHandlingEnabled();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRecoverableErrorHandlingEnabled() {
-        return $this->isRecoverableErrorHandlingEnabled;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFatalErrorHandlingEnabled() {
-        return $this->isFatalErrorHandlingEnabled;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isConvertingErrorsToExceptions() {
-        return $this->isConvertingErrorsToExceptions;
     }
 
     /**
