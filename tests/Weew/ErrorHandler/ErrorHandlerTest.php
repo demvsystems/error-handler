@@ -62,21 +62,21 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($handler->isFatalErrorHandlingEnabled());
     }
 
-    public function test_add_and_get_exception_handler_callbacks() {
+    public function test_add_and_get_exception_callbacks() {
         $handler = new ErrorHandler();
         $this->assertEquals(0, count($handler->getExceptionHandlers()));
         $handler->addExceptionHandlerCallback($this->getNoop());
         $this->assertEquals(1, count($handler->getExceptionHandlers()));
     }
 
-    public function test_add_and_get_recoverable_error_handlers() {
+    public function test_add_and_get_recoverable_error_callbacks() {
         $handler = new ErrorHandler();
         $this->assertEquals(0, count($handler->getRecoverableErrorHandlers()));
-        $handler->addRecoverableErrorHandler($this->getNoop());
+        $handler->addRecoverableErrorCallback($this->getNoop());
         $this->assertEquals(1, count($handler->getRecoverableErrorHandlers()));
     }
 
-    public function test_add_and_get_fatal_error_handlers() {
+    public function test_add_and_get_fatal_error_callbacks() {
         $handler = new ErrorHandler();
         $this->assertEquals(0, count($handler->getFatalErrorHandlers()));
         $handler->addFatalErrorHandler($this->getNoop());
@@ -120,7 +120,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle_recoverable_error_with_handler() {
         $handler = new ErrorHandler();
-        $handler->addRecoverableErrorHandler(function() {});
+        $handler->addRecoverableErrorCallback(function() {});
         $this->assertNull(
             $handler->handleRecoverableError(new RecoverableError(null, null, null, null))
         );
@@ -128,7 +128,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle_recoverable_error_with_negative_handler() {
         $handler = new ErrorHandler();
-        $handler->addRecoverableErrorHandler(function() {
+        $handler->addRecoverableErrorCallback(function() {
             return false;
         });
         $this->assertFalse(

@@ -124,7 +124,7 @@ class ErrorHandler implements IErrorHandler {
     /**
      * @param callable $handler
      */
-    public function addRecoverableErrorHandler(callable $handler) {
+    public function addRecoverableErrorCallback(callable $handler) {
         $this->recoverableErrorHandlers[] = $this->createRecoverableErrorHandler($handler);
     }
 

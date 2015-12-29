@@ -54,7 +54,7 @@ interface IErrorHandler {
     /**
      * @param callable $handler
      */
-    function addRecoverableErrorHandler(callable $handler);
+    function addRecoverableErrorCallback(callable $handler);
 
     /**
      * @param callable $handler
