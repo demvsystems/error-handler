@@ -49,7 +49,7 @@ interface IErrorHandler {
     /**
      * @param callable $handler
      */
-    function addExceptionHandlerCallback(callable $handler);
+    function addExceptionCallback(callable $handler);
 
     /**
      * @param callable $handler
