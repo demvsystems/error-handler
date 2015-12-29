@@ -18,10 +18,10 @@
     - [Handling recoverable PHP errors](#handling-recoverable-php-errors)
     - [Handling fatal PHP errors](#handling-fatal-php-errors)
     - [Handling both kinds of errors](#handling-both-kinds-of-errors)
-    - [Creating sophisticated error handler classes](#creating-sophisticated-error-handler-classes)
+    - [Sophisticated error handlers](#sophisticated-error-handlers)
 - [Exception handling](#exception-handling)
     - [Exception handler callbacks](#exception-handler-callbacks)
-    - [Exception handlers](#exception-handlers)
+    - [Sophisticated exception handlers](#sophisticated-exception-handlers)
 - [Converting errors to exceptions](#converting-errors-to-exceptions)
 
 ## Installation
@@ -129,7 +129,7 @@ $errorHandler->addErrorHandler(function(IError $error) {
 });
 ```
 
-### Creating sophisticated error handler classes
+### Sophisticated error handlers
 
 If you do not want to work with callbacks, you can create a sophisticated error handler class. All you have to do is to implement the `INativeErrorHandler` interface.
 
@@ -161,7 +161,7 @@ $errorHandler->addExceptionHandler(function(HttpException $ex) {
 });
 ```
 
-### Exception handlers
+### Sophisticated exception handlers
 
 You can add an exception handler by passing in an instance of `IExceptionHandler`. When an exception is thrown, error handler will ask your custom exception handler whether it supports this kind of exceptions and if so, ask your handler to handle this exception.
 
