@@ -206,7 +206,7 @@ class ErrorHandler implements IErrorHandler {
         }
 
         if (is_callable($handler)) {
-            $handler = $this->createRecoverableErrorHandler($handler);
+            $handler = $this->createNativeErrorHandler($handler);
         }
 
         $this->recoverableErrorHandlers[] = $handler;
@@ -228,7 +228,7 @@ class ErrorHandler implements IErrorHandler {
         }
 
         if (is_callable($handler)) {
-            $handler = $this->createFatalErrorHandler($handler);
+            $handler = $this->createNativeErrorHandler($handler);
         }
 
         $this->fatalErrorHandlers[] = $handler;
@@ -356,16 +356,7 @@ class ErrorHandler implements IErrorHandler {
      *
      * @return INativeErrorHandler
      */
-    protected function createRecoverableErrorHandler(callable $handler) {
-        return new NativeErrorHandler($handler);
-    }
-
-    /**
-     * @param callable $handler
-     *
-     * @return INativeErrorHandler
-     */
-    protected function createFatalErrorHandler(callable $handler) {
+    protected function createNativeErrorHandler(callable $handler) {
         return new NativeErrorHandler($handler);
     }
 

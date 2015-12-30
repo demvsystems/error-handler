@@ -30,7 +30,7 @@
 
 ## Introduction
 
-This little library allows you to easily handle exceptions, recoverable and fatal errors globally in your code. Some types of errors are recoverable some are not, This kind of error handling should be used as last resort to do some logging, etc.
+This little library allows you to easily handle exceptions, recoverable and fatal errors globally in your code. Some types of errors are recoverable some are not, this kind of error handling should be used as last resort to do some logging, etc.
 
 ## Enabling error handling
 
@@ -219,8 +219,6 @@ Below is a full list of available exceptions.
 - `E_CORE_ERROR` -> [CoreErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CoreErrorException.php)
 - `E_CORE_WARNING` -> [CoreWarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CoreWarningException.php)
 - `E_DEPRECATED` -> [DeprecatedException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/DeprecatedException.php)
-- `E_ERROR` -> [ErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/ErrorException.php)
-- `E_DEPRECATED` -> [DeprecatedException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/DeprecatedExceptions/Exception.php)
 - `E_ERROR` -> [ErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/ErrorException.php)
 - `E_NOTICE` -> [NoticeException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/NoticeException.php)
 - `E_PARSE` -> [ParseException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/ParseException.php)
