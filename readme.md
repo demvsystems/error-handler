@@ -214,21 +214,23 @@ $errorHandler->addExceptionHandler(function(IErrorException $ex) {
 
 Below is a full list of available exceptions.
 
-- `E_COMPILE_ERROR` -> [CompileErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CompileErrorException.php)
-- `E_COMPILE_WARNING` -> [CompileWarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CompileWarningException.php)
-- `E_CORE_ERROR` -> [CoreErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CoreErrorException.php)
-- `E_CORE_WARNING` -> [CoreWarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CoreWarningException.php)
-- `E_DEPRECATED` -> [DeprecatedException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/DeprecatedException.php)
-- `E_ERROR` -> [ErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/ErrorException.php)
-- `E_NOTICE` -> [NoticeException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/NoticeException.php)
-- `E_PARSE` -> [ParseException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/ParseException.php)
-- `E_RECOVERABLE_ERROR` -> [RecoverableErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/RecoverableErrorException.php)
-- `E_STRICT` -> [StrictException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/StrictException.php)
-- `E_USER_DEPRECATED` -> [UserDeprecatedException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserDeprecatedException.php)
-- `E_USER_ERROR` -> [UserErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserErrorException.php)
-- `E_USER_NOTICE` -> [UserNoticeException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserNoticeException.php)
-- `E_USER_WARNING` -> [UserWarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserWarningException.php)
-- `E_WARNING` -> [WarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/WarningException.php)
+Error type | Exception name
+--- | ---
+`E_COMPILE_ERROR`      | [CompileErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CompileErrorException.php)
+`E_COMPILE_WARNING` | [CompileWarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CompileWarningException.php)
+`E_CORE_ERROR` | [CoreErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CoreErrorException.php)
+`E_CORE_WARNING` | [CoreWarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/CoreWarningException.php)
+`E_DEPRECATED` | [DeprecatedException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/DeprecatedException.php)
+`E_ERROR` | [ErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/ErrorException.php)
+`E_NOTICE` | [NoticeException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/NoticeException.php)
+`E_PARSE` | [ParseException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/ParseException.php)
+`E_RECOVERABLE_ERROR` | [RecoverableErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/RecoverableErrorException.php)
+`E_STRICT` | [StrictException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/StrictException.php)
+`E_USER_DEPRECATED` | [UserDeprecatedException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserDeprecatedException.php)
+`E_USER_ERROR` | [UserErrorException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserErrorException.php)
+`E_USER_NOTICE` | [UserNoticeException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserNoticeException.php)
+`E_USER_WARNING` | [UserWarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserWarningException.php)
+`E_WARNING` | [WarningException](https://github.com/weew/php-error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/WarningException.php)
 
 All exceptions listed above share the same `IErrorException` interface that offers some getters to access the error information.
 
