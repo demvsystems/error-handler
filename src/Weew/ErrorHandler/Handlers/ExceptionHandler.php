@@ -28,11 +28,8 @@ class ExceptionHandler implements IExceptionHandler {
      * @return bool
      */
     public function supports(Exception $ex) {
-        $parents = class_parents($ex);
-        $exceptionClass = get_class($ex);
-
-        $instanceof = $exceptionClass === $this->getExceptionClass();
-        $extends = is_array($parents) && in_array($this->getExceptionClass(), $parents);
+        $instanceof = get_class($ex) === $this->getExceptionClass();
+        $extends = is_subclass_of($ex, $this->getExceptionClass());
 
         return $instanceof || $extends;
     }
