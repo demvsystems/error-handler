@@ -5,6 +5,7 @@ namespace Tests\Weew\ErrorHandler\Handlers;
 use Exception;
 use PHPUnit_Framework_TestCase;
 use Tests\Weew\ErrorHandler\Stubs\FooException;
+use Tests\Weew\ErrorHandler\Stubs\IFooException;
 use Weew\ErrorHandler\Handlers\ExceptionHandler;
 
 class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
@@ -35,6 +36,10 @@ class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
         $handler = new ExceptionHandler(function(Exception $ex) {});
         $this->assertTrue($handler->supports(new Exception()));
         $this->assertTrue($handler->supports(new FooException()));
+
+        $handler = new ExceptionHandler(function(IFooException $ex) {});
+        $this->assertTrue($handler->supports(new FooException()));
+        $this->assertFalse($handler->supports(new Exception()));
 
         $handler = new ExceptionHandler(function() {});
         $this->assertFalse($handler->supports(new Exception()));
