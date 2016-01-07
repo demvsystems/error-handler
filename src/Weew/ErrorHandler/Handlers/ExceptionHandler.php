@@ -5,6 +5,8 @@ namespace Weew\ErrorHandler\Handlers;
 use Exception;
 use ReflectionClass;
 use ReflectionFunction;
+use ReflectionMethod;
+use ReflectionParameter;
 
 class ExceptionHandler implements IExceptionHandler {
     /**
@@ -68,9 +70,8 @@ class ExceptionHandler implements IExceptionHandler {
      *
      * @return null|string
      */
-    protected function parseExceptionClass($handler) {
-        $reflector = new ReflectionFunction($handler);
-        $parameters = $reflector->getParameters();
+    protected function parseExceptionClass(callable $handler) {
+        $parameters = $this->getReflectionParameters($handler);
 
         if (count($parameters) > 0) {
             $parameter = $parameters[0];
@@ -92,5 +93,20 @@ class ExceptionHandler implements IExceptionHandler {
      */
     protected function invokeHandler(callable $handler, Exception $exception) {
         return $handler($exception);
+    }
+
+    /**
+     * @param callable $handler
+     *
+     * @return ReflectionParameter[]
+     */
+    protected function getReflectionParameters(callable $handler) {
+        if (is_array($handler)) {
+            $reflector = new ReflectionMethod($handler[0], $handler[1]);
+        } else {
+            $reflector = new ReflectionFunction($handler);
+        }
+
+        return $reflector->getParameters();
     }
 }
