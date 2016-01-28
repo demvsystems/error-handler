@@ -319,6 +319,10 @@ class ErrorHandler implements IErrorHandler {
      */
     public function convertErrorsToExceptions($convertErrorsToExceptions) {
         $this->isConvertingErrorsToExceptions = $convertErrorsToExceptions;
+
+        if ($convertErrorsToExceptions) {
+            $this->enableErrorHandling();
+        }
     }
 
     /**
