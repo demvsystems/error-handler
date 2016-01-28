@@ -296,7 +296,7 @@ class ErrorHandler implements IErrorHandler {
      * @return bool|void
      */
     public function handleFatalError(IError $error) {
-        ob_get_clean();
+        $ob = ob_get_clean();
 
         if ($this->isConvertingErrorsToExceptions()) {
             return $this->errorConverter
@@ -310,6 +310,8 @@ class ErrorHandler implements IErrorHandler {
                 return;
             }
         }
+
+        echo $ob;
 
         return false;
     }
