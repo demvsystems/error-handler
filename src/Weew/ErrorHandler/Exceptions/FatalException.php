@@ -90,7 +90,7 @@ class FatalException extends Exception
     protected function formatErrorMessage() {
         return s(
             '%s: %s in %s on line %s',
-            ErrorTypes::getErrorType($this->getErrorType()),
+            ErrorTypes::getErrorTypeName($this->getErrorType()),
             $this->getErrorMessage(),
             $this->getErrorFile(),
             $this->getErrorLine()

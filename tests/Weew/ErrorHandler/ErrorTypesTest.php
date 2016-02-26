@@ -46,10 +46,10 @@ class ErrorTypesTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(count($types) > 0);
     }
 
-    public function test_get_error_type() {
-        $this->assertEquals('E_ERROR', ErrorTypes::getErrorType(E_ERROR));
-        $this->assertEquals('E_PARSE', ErrorTypes::getErrorType(E_PARSE));
-        $this->assertEquals('E_WARNING', ErrorTypes::getErrorType(E_WARNING));
+    public function test_get_error_type_name() {
+        $this->assertEquals('E_ERROR', ErrorTypes::getErrorTypeName(E_ERROR));
+        $this->assertEquals('E_PARSE', ErrorTypes::getErrorTypeName(E_PARSE));
+        $this->assertEquals('E_WARNING', ErrorTypes::getErrorTypeName(E_WARNING));
     }
 
     public function test_get_exception_classes_for_errors() {
@@ -72,5 +72,11 @@ class ErrorTypesTest extends PHPUnit_Framework_TestCase {
     public function test_get_exception_class_for_error_missing() {
         $this->setExpectedException(MissingExceptionForErrorType::class, 'There is no custom exception for error of type "foo".');
         ErrorTypes::getExceptionClassForError('foo');
+    }
+
+    public function test_get_error_type_code() {
+        $this->assertEquals(E_ERROR, ErrorTypes::getErrorTypeCode('E_ERROR'));
+        $this->assertEquals(E_PARSE, ErrorTypes::getErrorTypeCode('E_PARSE'));
+        $this->assertEquals(E_WARNING, ErrorTypes::getErrorTypeCode('E_WARNING'));
     }
 }

@@ -180,12 +180,21 @@ class ErrorTypes {
     }
 
     /**
-     * @param $errorNumber
+     * @param $errorCode
      *
      * @return string
      */
-    public static function getErrorType($errorNumber) {
-        return array_get(self::getErrorTypes(), $errorNumber);
+    public static function getErrorTypeName($errorCode) {
+        return array_get(self::getErrorTypes(), $errorCode);
+    }
+
+    /**
+     * @param $errorName
+     *
+     * @return int
+     */
+    public static function getErrorTypeCode($errorName) {
+        return array_get(array_flip(self::getErrorTypes()), $errorName);
     }
 
     /**
