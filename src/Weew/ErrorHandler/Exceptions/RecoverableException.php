@@ -10,7 +10,7 @@ abstract class RecoverableException extends Exception
     /**
      * @var int
      */
-    protected $errorType;
+    protected $errorCode;
 
     /**
      * @var string
@@ -41,7 +41,7 @@ abstract class RecoverableException extends Exception
         $errorFile,
         $errorLine
     ) {
-        $this->errorType = $errorType;
+        $this->errorCode = $errorType;
         $this->errorMessage = $errorMessage;
         $this->errorFile = $errorFile;
         $this->errorLine = $errorLine;
@@ -59,8 +59,8 @@ abstract class RecoverableException extends Exception
     /**
      * @return int
      */
-    public function getErrorType() {
-        return $this->errorType;
+    public function getErrorCode() {
+        return $this->errorCode;
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class RecoverableException extends Exception
     protected function formatErrorMessage() {
         return s(
             '%s: %s in %s on line %s',
-            ErrorTypes::getErrorTypeName($this->getErrorType()),
+            ErrorTypes::getErrorTypeName($this->getErrorCode()),
             $this->getErrorMessage(),
             $this->getErrorFile(),
             $this->getErrorLine()

@@ -245,9 +245,9 @@ class ErrorTypes {
      * @throws MissingExceptionForErrorType
      */
     public static function createExceptionForError(IError $error) {
-        $class = static::getExceptionClassForError($error->getType());
+        $class = static::getExceptionClassForError($error->getCode());
         $ex = new $class(
-            $error->getType(),
+            $error->getCode(),
             $error->getMessage(),
             $error->getFile(),
             $error->getLine()

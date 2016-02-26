@@ -6,7 +6,7 @@ class FatalError implements IError {
     /**
      * @var int
      */
-    protected $type;
+    protected $code;
 
     /**
      * @var string
@@ -32,7 +32,7 @@ class FatalError implements IError {
      * @param int $line
      */
     public function __construct($type, $message, $file, $line) {
-        $this->type = $type;
+        $this->code = $type;
         $this->message = $message;
         $this->file = $file;
         $this->line = $line;
@@ -48,8 +48,8 @@ class FatalError implements IError {
     /**
      * @return int
      */
-    public function getType() {
-        return $this->type;
+    public function getCode() {
+        return $this->code;
     }
 
     /**

@@ -80,7 +80,7 @@ All PHP errors are converted to an instance of `IError`. It serves as a holder f
 $error->isRecoverable();
 
 // get error type (E_WARNING, E_STRICT, etc.)
-$error->getType();
+$error->getCode();
 
 // get error message
 $error->getMessage();
@@ -236,7 +236,7 @@ All exceptions listed above share the same `IErrorException` interface that offe
 
 ```php
 // get numeric representation of the error type (E_WARNING, E_STRICT, etc.)
-$ex->getErrorType();
+$ex->getErrorCode();
 
 // get error message
 $ex->getErrorMessage();

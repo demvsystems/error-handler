@@ -11,7 +11,7 @@ interface IError {
     /**
      * @return int
      */
-    function getType();
+    function getCode();
 
     /**
      * @return string

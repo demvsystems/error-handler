@@ -14,12 +14,12 @@ class TestRunner {
     }
 
     public function runInHttpMode($file) {
-        $server = new HttpServer('localhost', 9000, $this->getFilePath($file));
+        $server = new HttpServer('localhost', 56789, $this->getFilePath($file));
         $server->start();
 
         $client = new HttpClient();
         $request = new HttpRequest(
-            HttpRequestMethod::GET, new Url('localhost:9000')
+            HttpRequestMethod::GET, new Url('localhost:56789')
         );
         $response = $client->send($request);
 

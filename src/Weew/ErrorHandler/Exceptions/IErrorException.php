@@ -6,7 +6,7 @@ interface IErrorException {
     /**
      * @return int
      */
-    function getErrorType();
+    function getErrorCode();
 
     /**
      * @return string
