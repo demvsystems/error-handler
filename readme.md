@@ -92,7 +92,7 @@ $error->getFile();
 $error->getLine();
 ```
 
-There is also a very useful `ErrorTypes` class that holds information about all kinds of PHP errors and might be used to get error type name based on the error type number, check if a particular type of error is recoverable or not, and so on.
+There is also a very useful `ErrorType` class that holds information about all kinds of PHP errors and might be used to get error type name based on the error type number, check if a particular type of error is recoverable or not, and so on.
 
 ### Handling recoverable PHP errors
 

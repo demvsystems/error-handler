@@ -1,7 +1,7 @@
 <?php
 
 use Weew\ErrorHandler\ErrorHandler;
-use Weew\ErrorHandler\ErrorTypes;
+use Weew\ErrorHandler\ErrorType;
 
 require __DIR__ . '/../../../../vendor/autoload.php';
 
@@ -12,6 +12,6 @@ $errorHandler->addRecoverableErrorHandler(function() {
     echo 'handled recoverable ';
 });
 
-trigger_error('error', ErrorTypes::USER_ERROR);
+trigger_error('error', ErrorType::USER_ERROR);
 
 echo 'continue';

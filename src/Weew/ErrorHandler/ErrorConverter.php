@@ -59,7 +59,7 @@ class ErrorConverter {
         IError $error
     ) {
         $handler->handleException(
-            ErrorTypes::createExceptionForError($error)
+            ErrorType::createExceptionForError($error)
         );
     }
 

@@ -3,7 +3,7 @@
 namespace Weew\ErrorHandler\Exceptions;
 
 use Exception;
-use Weew\ErrorHandler\ErrorTypes;
+use Weew\ErrorHandler\ErrorType;
 
 class FatalException extends Exception
     implements IErrorException {
@@ -90,7 +90,7 @@ class FatalException extends Exception
     protected function formatErrorMessage() {
         return s(
             '%s: %s in %s on line %s',
-            ErrorTypes::getErrorTypeName($this->getErrorCode()),
+            ErrorType::getErrorTypeName($this->getErrorCode()),
             $this->getErrorMessage(),
             $this->getErrorFile(),
             $this->getErrorLine()

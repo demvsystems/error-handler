@@ -7,7 +7,7 @@ use Tests\Weew\ErrorHandler\Stubs\FakeErrorConverter;
 use Weew\ErrorHandler\ErrorConverter;
 use Weew\ErrorHandler\ErrorHandler;
 use Weew\ErrorHandler\Errors\RecoverableError;
-use Weew\ErrorHandler\ErrorTypes;
+use Weew\ErrorHandler\ErrorType;
 use Weew\ErrorHandler\Exceptions\ErrorException;
 use Weew\ErrorHandler\Exceptions\ParseException;
 
@@ -17,7 +17,7 @@ class ErrorConverterTest extends PHPUnit_Framework_TestCase {
         $handler = new ErrorHandler(true);
         $this->setExpectedException(ErrorException::class);
         $converter->createRecoverableErrorAndCallHandler(
-            $handler, ErrorTypes::ERROR, 'foo', 'bar', 'yolo'
+            $handler, ErrorType::ERROR, 'foo', 'bar', 'yolo'
         );
     }
 
@@ -42,7 +42,7 @@ class ErrorConverterTest extends PHPUnit_Framework_TestCase {
         $converter = new ErrorConverter();
         $handler = new ErrorHandler(true);
         $error = new RecoverableError(
-            ErrorTypes::ERROR, 'foo', 'bar', 'yolo'
+            ErrorType::ERROR, 'foo', 'bar', 'yolo'
         );
 
         $this->setExpectedException(ErrorException::class);
@@ -54,7 +54,7 @@ class ErrorConverterTest extends PHPUnit_Framework_TestCase {
         $handler = new ErrorHandler(true);
         $handler->addExceptionHandler(function(ErrorException $ex) {});
         $error = new RecoverableError(
-            ErrorTypes::ERROR, 'foo', 'bar', 'yolo'
+            ErrorType::ERROR, 'foo', 'bar', 'yolo'
         );
 
         $converter->convertErrorToExceptionAndCallHandler($handler, $error);

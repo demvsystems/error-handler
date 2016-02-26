@@ -20,7 +20,7 @@ use Weew\ErrorHandler\Exceptions\UserNoticeException;
 use Weew\ErrorHandler\Exceptions\UserWarningException;
 use Weew\ErrorHandler\Exceptions\WarningException;
 
-class ErrorTypes {
+class ErrorType {
     /**
      * Fatal run-time errors. These indicate errors that can not be
      * recovered from, such as a memory allocation problem.

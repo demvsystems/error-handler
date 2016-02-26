@@ -3,12 +3,12 @@
 namespace Tests\Weew\ErrorHandler\Stubs;
 
 use Weew\ErrorHandler\ErrorConverter;
-use Weew\ErrorHandler\ErrorTypes;
+use Weew\ErrorHandler\ErrorType;
 
 class FakeErrorConverter extends ErrorConverter {
     protected function getLastError() {
         return [
-            'type' => ErrorTypes::PARSE,
+            'type' => ErrorType::PARSE,
             'message' => 'bar',
             'file' => 'yolo',
             'line' => 'swag',

@@ -10,7 +10,7 @@ use Tests\Weew\ErrorHandler\Stubs\FooException;
 use Weew\ErrorHandler\ErrorHandler;
 use Weew\ErrorHandler\Errors\FatalError;
 use Weew\ErrorHandler\Errors\RecoverableError;
-use Weew\ErrorHandler\ErrorTypes;
+use Weew\ErrorHandler\ErrorType;
 use Weew\ErrorHandler\Exceptions\ErrorException;
 use Weew\ErrorHandler\Exceptions\InvalidHandlerType;
 use Weew\ErrorHandler\Exceptions\ParseException;
@@ -227,7 +227,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $handler = new ErrorHandler(true);
         $this->setExpectedException(ErrorException::class);
         $handler->handleRecoverableError(
-            new RecoverableError(ErrorTypes::ERROR, 'bar', 'baz', 'yolo')
+            new RecoverableError(ErrorType::ERROR, 'bar', 'baz', 'yolo')
         );
     }
 
@@ -237,13 +237,13 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
         ob_start();
         $handler->handleFatalError(
-            new FatalError(ErrorTypes::PARSE, 'bar', 'baz', 'yolo')
+            new FatalError(ErrorType::PARSE, 'bar', 'baz', 'yolo')
         );
     }
 
     public function test_handle_error_with_fatal_error() {
         $handler = new ErrorHandler();
-        $fatalError = new FatalError(ErrorTypes::PARSE, 'foo', 'bar', 'baz');
+        $fatalError = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
 
         ob_start();
         $this->assertFalse($handler->handleError($fatalError));
@@ -254,7 +254,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle_error_with_recoverable_error() {
         $handler = new ErrorHandler();
-        $recoverableError = new RecoverableError(ErrorTypes::ERROR, 'foo', 'bar', 'baz');
+        $recoverableError = new RecoverableError(ErrorType::ERROR, 'foo', 'bar', 'baz');
 
         $this->assertFalse($handler->handleError($recoverableError));
         $handler->addRecoverableErrorHandler($this->getNoop());
