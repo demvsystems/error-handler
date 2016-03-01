@@ -40,6 +40,10 @@ class ErrorConverter {
             return;
         }
 
+        if ( ! ErrorType::isFatal(array_get($error, 'type'))) {
+            return;
+        }
+
         $error = new FatalError(
             array_get($error, 'type'),
             array_get($error, 'message'),

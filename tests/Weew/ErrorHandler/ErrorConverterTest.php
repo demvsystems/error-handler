@@ -37,6 +37,12 @@ class ErrorConverterTest extends PHPUnit_Framework_TestCase {
         ob_start();
         $converter->extractFatalErrorAndCallHandler($handler);
     }
+
+    public function test_extract_fatal_error_and_call_handler_with_recoverable_error() {
+        $converter = new FakeErrorConverter(ErrorType::NOTICE);
+        $handler = new ErrorHandler(true);
+        $this->assertNull($converter->extractFatalErrorAndCallHandler($handler));
+    }
     
     public function test_convert_error_to_exception_and_call_handler() {
         $converter = new ErrorConverter();

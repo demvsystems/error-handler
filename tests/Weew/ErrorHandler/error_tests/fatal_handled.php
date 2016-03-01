@@ -12,4 +12,4 @@ $errorHandler->addFatalErrorHandler(function() {
     echo 'handled fatal';
 });
 
-trigger_error('error', ErrorType::USER_ERROR);
+trigger_error('error', ErrorType::FOO);
