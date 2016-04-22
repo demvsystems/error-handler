@@ -144,7 +144,7 @@ class ErrorType {
      * @return bool
      */
     public static function isRecoverable($errorNumber) {
-        return in_array($errorNumber, self::getRecoverableErrors());
+        return array_contains(self::getRecoverableErrors(), $errorNumber);
     }
 
     /**
@@ -153,7 +153,7 @@ class ErrorType {
      * @return bool
      */
     public static function isFatal($errorNumber) {
-        return in_array($errorNumber, self::getFatalErrors());
+        return array_contains(self::getFatalErrors(), $errorNumber);
     }
 
     /**
