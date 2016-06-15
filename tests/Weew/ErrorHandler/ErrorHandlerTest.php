@@ -273,6 +273,8 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         } catch (Exception $ex) {}
 
         $handler->handleError($recoverableError);
+        ob_start();
         $handler->handleFatalError($fatalError);
+        ob_start();
     }
 }

@@ -286,7 +286,10 @@ class ErrorHandler implements IErrorHandler {
         // ignore error caused by a rethrown exception
         if ($this->ignoreRethrownException) {
             // remove error from error_get_last()
-            trigger_error(null);
+            $ob = ob_get_clean();
+            @trigger_error(null);
+            ob_get_clean();
+            echo $ob;
 
             return;
         }
@@ -316,7 +319,10 @@ class ErrorHandler implements IErrorHandler {
         // ignore error caused by a rethrown exception
         if ($this->ignoreRethrownException) {
             // remove error from error_get_last()
-            trigger_error(null);
+            $ob = ob_get_clean();
+            @trigger_error(null);
+            ob_get_clean();
+            echo $ob;
 
             return;
         }
