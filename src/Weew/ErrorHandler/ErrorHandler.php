@@ -52,6 +52,11 @@ class ErrorHandler implements IErrorHandler {
     protected $isConvertingErrorsToExceptions = false;
 
     /**
+     * @var bool
+     */
+    protected $ignoreRethrownException = false;
+
+    /**
      * ErrorHandler constructor.
      *
      * @param bool $convertErrorsToExceptions
@@ -252,6 +257,10 @@ class ErrorHandler implements IErrorHandler {
             }
         }
 
+        // rethrown exception will result in an
+        // error, this error must be ignored
+        $this->ignoreRethrownException = true;
+
         throw $ex;
     }
 
@@ -274,6 +283,14 @@ class ErrorHandler implements IErrorHandler {
      * @return bool|void
      */
     public function handleRecoverableError(IError $error) {
+        // ignore error caused by a rethrown exception
+        if ($this->ignoreRethrownException) {
+            // remove error from error_get_last()
+            trigger_error(null);
+
+            return;
+        }
+
         if ($this->isConvertingErrorsToExceptions()) {
             return $this->errorConverter
                 ->convertErrorToExceptionAndCallHandler($this, $error);
@@ -296,6 +313,14 @@ class ErrorHandler implements IErrorHandler {
      * @return bool|void
      */
     public function handleFatalError(IError $error) {
+        // ignore error caused by a rethrown exception
+        if ($this->ignoreRethrownException) {
+            // remove error from error_get_last()
+            trigger_error(null);
+
+            return;
+        }
+
         $ob = ob_get_clean();
 
         if ($this->isConvertingErrorsToExceptions()) {

@@ -2,6 +2,7 @@
 
 namespace Tests\Weew\ErrorHandler;
 
+use Exception;
 use PHPUnit_Framework_TestCase;
 use Tests\Weew\ErrorHandler\Stubs\BarException;
 use Tests\Weew\ErrorHandler\Stubs\FakeExceptionHandler;
@@ -259,5 +260,19 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($handler->handleError($recoverableError));
         $handler->addRecoverableErrorHandler($this->getNoop());
         $this->assertNull($handler->handleError($recoverableError));
+    }
+
+    public function test_unhandled_exception_with_error_handling_enabled() {
+        $handler = new ErrorHandler();
+        $exception = new Exception();
+        $recoverableError = new RecoverableError(ErrorType::ERROR, 'foo', 'bar', 'baz');
+        $fatalError = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
+
+        try {
+            $handler->handleException($exception);
+        } catch (Exception $ex) {}
+
+        $handler->handleError($recoverableError);
+        $handler->handleFatalError($fatalError);
     }
 }
