@@ -10,6 +10,7 @@ use Tests\Weew\ErrorHandler\Stubs\FakeNativeErrorHandler;
 use Tests\Weew\ErrorHandler\Stubs\FooException;
 use Weew\ErrorHandler\ErrorHandler;
 use Weew\ErrorHandler\Errors\FatalError;
+use Weew\ErrorHandler\Errors\IError;
 use Weew\ErrorHandler\Errors\RecoverableError;
 use Weew\ErrorHandler\ErrorType;
 use Weew\ErrorHandler\Exceptions\ErrorException;
@@ -276,5 +277,46 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         ob_start();
         $handler->handleFatalError($fatalError);
         ob_start();
+    }
+
+    public function test_exception_from_exception_handler_is_handled() {
+        $handler = new ErrorHandler();
+        $exception = new Exception();
+
+        $handler->addExceptionHandler(function(Exception $ex) {
+            throw new Exception();
+        });
+
+        try {
+            $handler->handleException($exception);
+        } catch (Exception $ex) {}
+    }
+
+    public function test_exception_from_fatal_error_handler_is_handled() {
+        $handler = new ErrorHandler();
+        $fatalError = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
+
+        $handler->addFatalErrorHandler(function(IError $error) {
+            throw new Exception();
+        });
+
+        try {
+            $handler->handleFatalError($fatalError);
+        } catch (Exception $ex) {}
+
+        ob_start();
+    }
+
+    public function test_exception_from_recoverable_error_handler_is_handled() {
+        $handler = new ErrorHandler();
+        $recoverableError = new RecoverableError(ErrorType::ERROR, 'foo', 'bar', 'baz');
+
+        $handler->addRecoverableErrorHandler(function(IError $error) {
+            throw new Exception();
+        });
+
+        try {
+            $handler->handleRecoverableError($recoverableError);
+        } catch (Exception $ex) {}
     }
 }

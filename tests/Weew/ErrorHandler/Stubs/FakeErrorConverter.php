@@ -6,9 +6,6 @@ use Weew\ErrorHandler\ErrorConverter;
 use Weew\ErrorHandler\ErrorType;
 
 class FakeErrorConverter extends ErrorConverter {
-    /**
-     * @var
-     */
     private $type;
 
     public function __construct($type = ErrorType::PARSE) {

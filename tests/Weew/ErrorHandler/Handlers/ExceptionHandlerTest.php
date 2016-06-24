@@ -10,6 +10,15 @@ use Tests\Weew\ErrorHandler\Stubs\IFooException;
 use Weew\ErrorHandler\Handlers\ExceptionHandler;
 
 class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
+    public function test_enable_and_disable_handler() {
+        $callable = function(FooException $ex) {};
+        $handler = new ExceptionHandler($callable);
+
+        $this->assertTrue($handler->isEnabled());
+        $handler->setEnabled(false);
+        $this->assertFalse($handler->isEnabled());
+    }
+
     public function test_get_handler() {
         $callable = function(FooException $ex) {};
         $handler = new ExceptionHandler($callable);

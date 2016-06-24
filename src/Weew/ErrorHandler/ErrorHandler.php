@@ -246,14 +246,21 @@ class ErrorHandler implements IErrorHandler {
      */
     public function handleException(Exception $ex) {
         foreach ($this->getExceptionHandlers() as $handler) {
-            if ( ! $handler->supports($ex)) {
-                continue;
-            }
+            if ($handler->isEnabled()) {
+                try {
+                    if ( ! $handler->supports($ex)) {
+                        continue;
+                    }
 
-            $handled = $handler->handle($ex);
+                    $handled = $handler->handle($ex);
 
-            if ($handled === true) {
-                return;
+                    if ($handled === true) {
+                        return;
+                    }
+                } catch (Exception $ex) {
+                    $handler->setEnabled(false);
+                    $this->handleException($ex);
+                }
             }
         }
 
@@ -285,13 +292,7 @@ class ErrorHandler implements IErrorHandler {
     public function handleRecoverableError(IError $error) {
         // ignore error caused by a rethrown exception
         if ($this->ignoreRethrownException) {
-            // remove error from error_get_last()
-            $ob = ob_get_clean();
-            @trigger_error(null);
-            ob_get_clean();
-            echo $ob;
-
-            return;
+            return $this->handleErrorCausedByRethrownException();
         }
 
         if ($this->isConvertingErrorsToExceptions()) {
@@ -300,10 +301,17 @@ class ErrorHandler implements IErrorHandler {
         }
 
         foreach ($this->getRecoverableErrorHandlers() as $handler) {
-            $handled = $handler->handle($error);
+            if ($handler->isEnabled()) {
+                try {
+                    $handled = $handler->handle($error);
 
-            if ($handled === true) {
-                return;
+                    if ($handled === true) {
+                        return;
+                    }
+                } catch (Exception $ex) {
+                    $handler->setEnabled(false);
+                    $this->handleException($ex);
+                }
             }
         }
 
@@ -318,13 +326,7 @@ class ErrorHandler implements IErrorHandler {
     public function handleFatalError(IError $error) {
         // ignore error caused by a rethrown exception
         if ($this->ignoreRethrownException) {
-            // remove error from error_get_last()
-            $ob = ob_get_clean();
-            @trigger_error(null);
-            ob_get_clean();
-            echo $ob;
-
-            return;
+            return $this->handleErrorCausedByRethrownException();
         }
 
         $ob = ob_get_clean();
@@ -335,10 +337,17 @@ class ErrorHandler implements IErrorHandler {
         }
 
         foreach ($this->getFatalErrorHandlers() as $handler) {
-            $handled = $handler->handle($error);
+            if ($handler->isEnabled()) {
+                try {
+                    $handled = $handler->handle($error);
 
-            if ($handled === true) {
-                return;
+                    if ($handled === true) {
+                        return;
+                    }
+                } catch (Exception $ex) {
+                    $handler->setEnabled(false);
+                    $this->handleException($ex);
+                }
             }
         }
 
@@ -377,6 +386,22 @@ class ErrorHandler implements IErrorHandler {
      */
     public function getFatalErrorHandlers() {
         return $this->fatalErrorHandlers;
+    }
+
+    /**
+     * Called whenever an error has been raised by an exception either from
+     * an error or an exception handler.
+     */
+    protected function handleErrorCausedByRethrownException() {
+        $this->ignoreRethrownException = false;
+
+        // remove error from error_get_last()
+        $ob = ob_get_clean();
+        @trigger_error(null);
+        ob_get_clean();
+        echo $ob;
+
+        return;
     }
 
     /**

@@ -8,6 +8,15 @@ use Weew\ErrorHandler\Errors\FatalError;
 use Weew\ErrorHandler\Handlers\NativeErrorHandler;
 
 class FatalErrorHandlerTest extends PHPUnit_Framework_TestCase {
+    public function test_enable_and_disable_handler() {
+        $callable = function(IError $error) {};
+        $handler = new NativeErrorHandler($callable);
+
+        $this->assertTrue($handler->isEnabled());
+        $handler->setEnabled(false);
+        $this->assertFalse($handler->isEnabled());
+    }
+
     public function test_get_handler() {
         $callable = function(IError $error) {};
         $handler = new NativeErrorHandler($callable);

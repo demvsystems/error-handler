@@ -18,4 +18,14 @@ interface IExceptionHandler {
      * @return bool
      */
     function handle(Exception $ex);
+
+    /**
+     * @return bool
+     */
+    function isEnabled();
+
+    /**
+     * @param bool $enabled
+     */
+    function setEnabled($enabled);
 }

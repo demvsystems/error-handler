@@ -11,4 +11,14 @@ interface INativeErrorHandler {
      * @return bool
      */
     function handle(IError $error);
+
+    /**
+     * @return bool
+     */
+    function isEnabled();
+
+    /**
+     * @param bool $enabled
+     */
+    function setEnabled($enabled);
 }

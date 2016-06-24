@@ -15,6 +15,11 @@ class ExceptionHandler implements IExceptionHandler {
     protected $exceptionClass;
 
     /**
+     * @var bool
+     */
+    protected $enabled = true;
+
+    /**
      * ExceptionHandler constructor.
      *
      * @param callable $handler
@@ -63,6 +68,20 @@ class ExceptionHandler implements IExceptionHandler {
      */
     public function getHandler() {
         return $this->handler;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled() {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled($enabled) {
+        $this->enabled = $enabled;
     }
 
     /**

@@ -11,6 +11,11 @@ class NativeErrorHandler implements INativeErrorHandler {
     protected $handler;
 
     /**
+     * @var bool
+     */
+    protected $enabled = true;
+
+    /**
      * NativeErrorHandler constructor.
      *
      * @param callable $handler
@@ -24,6 +29,20 @@ class NativeErrorHandler implements INativeErrorHandler {
      */
     public function getHandler() {
         return $this->handler;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled() {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled($enabled) {
+        $this->enabled = $enabled;
     }
 
     /**
