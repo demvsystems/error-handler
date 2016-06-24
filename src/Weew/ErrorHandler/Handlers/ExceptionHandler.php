@@ -10,6 +10,11 @@ use ReflectionParameter;
 
 class ExceptionHandler implements IExceptionHandler {
     /**
+     * @var callable
+     */
+    protected $handler;
+
+    /**
      * @var null|string
      */
     protected $exceptionClass;
@@ -53,7 +58,7 @@ class ExceptionHandler implements IExceptionHandler {
 
         $handled = $this->invokeHandler($this->getHandler(), $ex);
 
-        return $handled === false ? false : true;
+        return $handled === true ? true : false;
     }
 
     /**

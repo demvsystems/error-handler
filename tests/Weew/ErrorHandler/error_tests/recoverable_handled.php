@@ -10,6 +10,8 @@ $errorHandler->enableRecoverableErrorHandling();
 
 $errorHandler->addRecoverableErrorHandler(function() {
     echo 'handled recoverable ';
+
+    return true;
 });
 
 trigger_error('error', ErrorType::USER_ERROR);

@@ -241,7 +241,6 @@ class ErrorHandler implements IErrorHandler {
 
     /**
      * @param Exception $ex
-     *
      * @throws Exception
      */
     public function handleException(Exception $ex) {
@@ -273,14 +272,12 @@ class ErrorHandler implements IErrorHandler {
 
     /**
      * @param IError $error
-     *
-     * @return bool|void
      */
     public function handleError(IError $error) {
         if ($error->isRecoverable()) {
-            return $this->handleRecoverableError($error);
+            $this->handleRecoverableError($error);
         } else {
-            return $this->handleFatalError($error);
+            $this->handleFatalError($error);
         }
     }
 
@@ -292,7 +289,8 @@ class ErrorHandler implements IErrorHandler {
     public function handleRecoverableError(IError $error) {
         // ignore error caused by a rethrown exception
         if ($this->ignoreRethrownException) {
-            return $this->handleErrorCausedByRethrownException();
+            $this->ignoreRethrownException = false;
+            return;
         }
 
         if ($this->isConvertingErrorsToExceptions()) {
@@ -326,7 +324,8 @@ class ErrorHandler implements IErrorHandler {
     public function handleFatalError(IError $error) {
         // ignore error caused by a rethrown exception
         if ($this->ignoreRethrownException) {
-            return $this->handleErrorCausedByRethrownException();
+            $this->ignoreRethrownException = false;
+            return;
         }
 
         $ob = ob_get_clean();
@@ -352,8 +351,6 @@ class ErrorHandler implements IErrorHandler {
         }
 
         echo $ob;
-
-        return false;
     }
 
     /**
@@ -386,22 +383,6 @@ class ErrorHandler implements IErrorHandler {
      */
     public function getFatalErrorHandlers() {
         return $this->fatalErrorHandlers;
-    }
-
-    /**
-     * Called whenever an error has been raised by an exception either from
-     * an error or an exception handler.
-     */
-    protected function handleErrorCausedByRethrownException() {
-        $this->ignoreRethrownException = false;
-
-        // remove error from error_get_last()
-        $ob = ob_get_clean();
-        @trigger_error(null);
-        ob_get_clean();
-        echo $ob;
-
-        return;
     }
 
     /**

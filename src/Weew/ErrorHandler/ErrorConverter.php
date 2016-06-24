@@ -57,14 +57,18 @@ class ErrorConverter {
     /**
      * @param IErrorHandler $handler
      * @param IError $error
+     *
+     * @return bool
      */
     public function convertErrorToExceptionAndCallHandler(
         IErrorHandler $handler,
         IError $error
     ) {
-        $handler->handleException(
+        return $handler->handleException(
             ErrorType::createExceptionForError($error)
         );
+
+        return true;
     }
 
     /**

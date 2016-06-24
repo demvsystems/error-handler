@@ -65,7 +65,7 @@ $errorHandler->isFatalErrorHandlingEnabled();
 
 ## About error handlers
 
-Error handlers are small pieces of logic that you can register on the `ErrorHandler`. There are two different kinds of handlers: error and exception handlers. They all follow the same pattern: a handler accepts and abstraction of the occurred error / exception and returns a `boolean` value determining whether the error has bee handled or not. Error handler assumes that the error has been handled by default, if not, you'll have to return `false` (always returning `true` is optional).
+Error handlers are small pieces of logic that you can register on the `ErrorHandler`. There are two different kinds of handlers: error and exception handlers. They all follow the same pattern: a handler accepts and abstraction of the occurred error / exception and returns a `boolean` value determining whether the error has bee handled or not. If the error has been handled, error handlers must return `true`, returning `false` is optional.
 
 ## Error handling
 
@@ -101,7 +101,7 @@ Creating an error handler for recoverable errors.
 ```php
 $errorHandler = new ErrorHandler();
 $errorHandler->addRecoverableErrorHandler(function(IError $error) {
-
+    return true;
 });
 ```
 
@@ -112,7 +112,7 @@ Creating an error handler for fatal errors.
 ```php
 $errorHandler = new ErrorHandler();
 $errorHandler->addFatalErrorHandler(function(IError $error) {
-
+    return true;
 });
 ```
 
@@ -124,7 +124,7 @@ Creating an error handler that covers both, recoverable and fatal errors.
 $errorHandler = new ErrorHandler();
 $errorHandler->addErrorHandler(function(IError $error) {
     if ($error->isRecoverable()) {
-
+        return true;
     }
 });
 ```
@@ -136,7 +136,7 @@ If you do not want to work with callbacks, you can create a sophisticated error 
 ```php
 class CustomErrorHandler implements INativeErrorHandler {
     public function handle(IError $error) {
-
+        return true;
     }
 }
 
@@ -150,14 +150,14 @@ Error handler allows you to define the types of exceptions you want to handle in
 
 ### Exception handler callbacks
 
-When using simple callables / callbacks as exception handlers, all you have to do is to define the exception type in the function signature. Error handler will then figure out what kind of exceptions are supported by your exception handler and give it only the ones it can handle.
+When using simple callables / callbacks as exception handlers, all you have to do is to define the exception type in the function signature. Error handler will then figure out what kind of exceptions are supported by your exception handler and give it only the ones it can handle. Same as with errors, exception handlers must return `true` in order to tell that exception has been handled.
 
 Below is an example of an exception handler that handles only exceptions of type HttpException or it's subclasses.
 
 ```php
 $errorHandler = new ErrorHandler();
 $errorHandler->addExceptionHandler(function(HttpException $ex) {
-
+    return true;
 });
 ```
 
@@ -172,7 +172,7 @@ class CustomExceptionHandler implements IExceptionHandler {
     }
 
     public function handle(HttpException $ex) {
-
+        return true;
     }
 }
 
@@ -199,7 +199,7 @@ Now, whenever for example an `E_WARNING` occurres, you'll get a `WarningExceptio
 
 ```php
 $errorHandler->addExceptionHandler(function(WarningException $ex){
-
+    return true;
 });
 ```
 
@@ -209,6 +209,7 @@ If you want to deal with all PHP errors that are converted to an exception in th
 $errorHandler->addExceptionHandler(function(IErrorException $ex) {
     // all kinds of php errors (E_WARNING, E_STRICT, etc.) can now be handled
     // here in form of an exception
+    return true;
 });
 ```
 

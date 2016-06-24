@@ -58,7 +58,9 @@ class ErrorConverterTest extends PHPUnit_Framework_TestCase {
     public function test_convert_error_to_exception_and_call_handler_and_handle_exception() {
         $converter = new ErrorConverter();
         $handler = new ErrorHandler(true);
-        $handler->addExceptionHandler(function(ErrorException $ex) {});
+        $handler->addExceptionHandler(function(ErrorException $ex) {
+            return true;
+        });
         $error = new RecoverableError(
             ErrorType::ERROR, 'foo', 'bar', 'yolo'
         );

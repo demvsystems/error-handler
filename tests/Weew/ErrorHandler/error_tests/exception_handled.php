@@ -10,6 +10,8 @@ $errorHandler->enableExceptionHandling();
 
 $errorHandler->addExceptionHandler(function(FooException $ex) {
     echo 'handled exception';
+
+    return true;
 });
 
 throw new FooException();

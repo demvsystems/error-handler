@@ -151,7 +151,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle_exception_with_handler() {
         $handler = new ErrorHandler();
-        $handler->addExceptionHandler(function(FooException $ex) {});
+        $handler->addExceptionHandler(function(FooException $ex) {return true;});
         $handler->handleException(new FooException());
     }
 
@@ -180,7 +180,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle_recoverable_error_with_handler() {
         $handler = new ErrorHandler();
-        $handler->addRecoverableErrorHandler(function() {});
+        $handler->addRecoverableErrorHandler(function() {return true;});
         $this->assertNull(
             $handler->handleRecoverableError(new RecoverableError(null, null, null, null))
         );
@@ -220,9 +220,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         });
 
         ob_start();
-        $this->assertFalse(
-            $handler->handleFatalError(new FatalError(null, null, null, null))
-        );
+        $handler->handleFatalError(new FatalError(null, null, null, null));
     }
 
     public function test_handle_recoverable_error_with_error_to_exception_conversion_enabled() {
@@ -248,19 +246,19 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         $fatalError = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
 
         ob_start();
-        $this->assertFalse($handler->handleError($fatalError));
+        $handler->handleError($fatalError);
         $handler->addFatalErrorHandler($this->getNoop());
         ob_start();
-        $this->assertNull($handler->handleError($fatalError));
+        $handler->handleError($fatalError);
     }
 
     public function test_handle_error_with_recoverable_error() {
         $handler = new ErrorHandler();
         $recoverableError = new RecoverableError(ErrorType::ERROR, 'foo', 'bar', 'baz');
 
-        $this->assertFalse($handler->handleError($recoverableError));
+        $handler->handleError($recoverableError);
         $handler->addRecoverableErrorHandler($this->getNoop());
-        $this->assertNull($handler->handleError($recoverableError));
+        $handler->handleError($recoverableError);
     }
 
     public function test_unhandled_exception_with_error_handling_enabled() {
@@ -274,7 +272,6 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         } catch (Exception $ex) {}
 
         $handler->handleError($recoverableError);
-        ob_start();
         $handler->handleFatalError($fatalError);
         ob_start();
     }
@@ -292,7 +289,7 @@ class ErrorHandlerTest extends PHPUnit_Framework_TestCase {
         } catch (Exception $ex) {}
     }
 
-    public function test_exception_from_fatal_error_handler_is_handled() {
+    public function test_fatal_error_from_fatal_error_handler_is_handled() {
         $handler = new ErrorHandler();
         $fatalError = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
 

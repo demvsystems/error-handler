@@ -16,7 +16,7 @@ class RecoverableErrorHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle() {
         $handler = new NativeErrorHandler(function(IError $error) {});
-        $this->assertTrue(
+        $this->assertFalse(
             $handler->handle(new RecoverableError(null, null, null, null))
         );
 

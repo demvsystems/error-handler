@@ -12,6 +12,8 @@ $errorHandler->enableExceptionHandling();
 
 $errorHandler->addExceptionHandler(function(UserErrorException $ex) {
     echo 'handled recoverable converted ';
+
+    return true;
 });
 
 trigger_error('error', ErrorType::USER_ERROR);

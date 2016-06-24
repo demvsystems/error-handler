@@ -93,8 +93,6 @@ interface IErrorHandler {
 
     /**
      * @param IError $error
-     *
-     * @return bool|null
      */
     function handleError(IError $error);
 
@@ -107,8 +105,6 @@ interface IErrorHandler {
 
     /**
      * @param IError $error
-     *
-     * @return bool|null
      */
     function handleFatalError(IError $error);
 

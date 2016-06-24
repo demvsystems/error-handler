@@ -65,7 +65,7 @@ class ExceptionHandlerTest extends PHPUnit_Framework_TestCase {
 
     public function test_handle() {
         $handler = new ExceptionHandler(function(FooException $ex) {});
-        $this->assertTrue($handler->handle(new FooException()));
+        $this->assertFalse($handler->handle(new FooException()));
         $this->assertFalse($handler->handle(new Exception()));
 
         $handler = new ExceptionHandler(function(Exception $ex) {

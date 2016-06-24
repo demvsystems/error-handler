@@ -53,7 +53,7 @@ class NativeErrorHandler implements INativeErrorHandler {
     public function handle(IError $error) {
         $handled = $this->invokeHandler($this->getHandler(), $error);
 
-        return $handled === false ? false : true;
+        return $handled === true ? true : false;
     }
 
     /**
