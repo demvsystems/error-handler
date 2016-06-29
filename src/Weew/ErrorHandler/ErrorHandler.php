@@ -103,6 +103,8 @@ class ErrorHandler implements IErrorHandler {
         }
 
         set_error_handler(function ($number, $string, $file, $line) {
+            // remove error from error_get_last()
+            @trigger_error(null);
             return $this->errorConverter->createRecoverableErrorAndCallHandler(
                 $this, $number, $string, $file, $line
             );
