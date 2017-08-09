@@ -246,7 +246,7 @@ class ErrorHandler implements IErrorHandler {
      * @param Exception $ex
      * @throws Exception
      */
-    public function handleException(Exception $ex) {
+    public function handleException($ex) {
         foreach ($this->getExceptionHandlers() as $handler) {
             if ($handler->isEnabled()) {
                 try {

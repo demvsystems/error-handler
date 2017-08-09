@@ -89,7 +89,7 @@ interface IErrorHandler {
     /**
      * @param Exception $ex
      */
-    function handleException(Exception $ex);
+    function handleException($ex);
 
     /**
      * @param IError $error

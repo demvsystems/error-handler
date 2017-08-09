@@ -10,14 +10,14 @@ interface IExceptionHandler {
      *
      * @return bool
      */
-    function supports(Exception $ex);
+    function supports($ex);
 
     /**
      * @param Exception $ex
      *
      * @return bool
      */
-    function handle(Exception $ex);
+    function handle($ex);
 
     /**
      * @return bool
