@@ -3,6 +3,7 @@
 namespace Weew\ErrorHandler;
 
 use Exception;
+use Throwable;
 use Weew\ErrorHandler\Errors\IError;
 use Weew\ErrorHandler\Handlers\IExceptionHandler;
 use Weew\ErrorHandler\Handlers\INativeErrorHandler;
@@ -87,9 +88,9 @@ interface IErrorHandler {
     function addFatalErrorHandler($handler);
 
     /**
-     * @param Exception $ex
+     * @param Throwable $ex
      */
-    function handleException($ex);
+    function handleException(Throwable $ex);
 
     /**
      * @param IError $error

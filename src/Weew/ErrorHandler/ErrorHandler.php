@@ -3,6 +3,7 @@
 namespace Weew\ErrorHandler;
 
 use Exception;
+use Throwable;
 use Weew\ErrorHandler\Errors\IError;
 use Weew\ErrorHandler\Exceptions\InvalidHandlerType;
 use Weew\ErrorHandler\Handlers\ExceptionHandler;
@@ -243,10 +244,11 @@ class ErrorHandler implements IErrorHandler {
     }
 
     /**
-     * @param Exception $ex
-     * @throws Exception
+     * @param Throwable $ex
+     *
+     * @throws Throwable
      */
-    public function handleException($ex) {
+    public function handleException(Throwable $ex) {
         foreach ($this->getExceptionHandlers() as $handler) {
             if ($handler->isEnabled()) {
                 try {

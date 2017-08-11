@@ -2,22 +2,22 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
-use Exception;
+use Throwable;
 
 interface IExceptionHandler {
     /**
-     * @param Exception $ex
+     * @param Throwable $ex
      *
      * @return bool
      */
-    function supports($ex);
+    function supports(Throwable $ex);
 
     /**
-     * @param Exception $ex
+     * @param Throwable $ex
      *
      * @return bool
      */
-    function handle($ex);
+    function handle(Throwable $ex);
 
     /**
      * @return bool
