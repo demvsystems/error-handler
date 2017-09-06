@@ -17,7 +17,7 @@ class ErrorConverterTest extends TestCase
     {
         $converter = new ErrorConverter();
         $handler   = new ErrorHandler(true);
-        $this->setExpectedException(ErrorException::class);
+        $this->expectException(ErrorException::class);
         $converter->createRecoverableErrorAndCallHandler(
             $handler, ErrorType::ERROR, 'foo', 'bar', 'yolo'
         );
@@ -36,7 +36,7 @@ class ErrorConverterTest extends TestCase
     {
         $converter = new FakeErrorConverter();
         $handler   = new ErrorHandler(true);
-        $this->setExpectedException(ParseException::class);
+        $this->expectException(ParseException::class);
 
         ob_start();
         $converter->extractFatalErrorAndCallHandler($handler);
@@ -57,7 +57,7 @@ class ErrorConverterTest extends TestCase
             ErrorType::ERROR, 'foo', 'bar', 'yolo'
         );
 
-        $this->setExpectedException(ErrorException::class);
+        $this->expectException(ErrorException::class);
         $converter->convertErrorToExceptionAndCallHandler($handler, $error);
     }
 
