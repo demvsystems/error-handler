@@ -102,7 +102,7 @@ class ErrorHandlerTest extends TestCase
     public function test_add_invalid_exception_handler()
     {
         $handler = new ErrorHandler();
-        $this->setExpectedException(InvalidHandlerType::class);
+        $this->expectException(InvalidHandlerType::class);
         $handler->addExceptionHandler('foo');
     }
 
@@ -135,7 +135,7 @@ class ErrorHandlerTest extends TestCase
     public function test_add_invalid_recoverable_error_handler()
     {
         $handler = new ErrorHandler();
-        $this->setExpectedException(InvalidHandlerType::class);
+        $this->expectException(InvalidHandlerType::class);
         $handler->addRecoverableErrorHandler('foo');
     }
 
@@ -158,14 +158,14 @@ class ErrorHandlerTest extends TestCase
     public function test_add_invalid_fatal_error_handler()
     {
         $handler = new ErrorHandler();
-        $this->setExpectedException(InvalidHandlerType::class);
+        $this->expectException(InvalidHandlerType::class);
         $handler->addFatalErrorHandler('foo');
     }
 
     public function test_handle_exception_without_handler()
     {
         $handler = new ErrorHandler();
-        $this->setExpectedException(FooException::class);
+        $this->expectException(FooException::class);
         $handler->handleException(new FooException());
     }
 
@@ -184,7 +184,7 @@ class ErrorHandlerTest extends TestCase
         $handler->addExceptionHandler(function (FooException $ex) {
             return false;
         });
-        $this->setExpectedException(FooException::class);
+        $this->expectException(FooException::class);
         $handler->handleException(new FooException());
     }
 
@@ -193,7 +193,7 @@ class ErrorHandlerTest extends TestCase
         $handler = new ErrorHandler();
         $handler->addExceptionHandler(function (BarException $ex) {
         });
-        $this->setExpectedException(FooException::class);
+        $this->expectException(FooException::class);
         $handler->handleException(new FooException());
     }
 
@@ -261,7 +261,7 @@ class ErrorHandlerTest extends TestCase
     public function test_handle_recoverable_error_with_error_to_exception_conversion_enabled()
     {
         $handler = new ErrorHandler(true);
-        $this->setExpectedException(ErrorException::class);
+        $this->expectException(ErrorException::class);
         $handler->handleRecoverableError(
             new RecoverableError(ErrorType::ERROR, 'bar', 'baz', 'yolo')
         );
@@ -270,7 +270,7 @@ class ErrorHandlerTest extends TestCase
     public function test_handle_fatal_error_with_error_to_exception_conversion_enabled()
     {
         $handler = new ErrorHandler(true);
-        $this->setExpectedException(ParseException::class);
+        $this->expectException(ParseException::class);
 
         ob_start();
         $handler->handleFatalError(

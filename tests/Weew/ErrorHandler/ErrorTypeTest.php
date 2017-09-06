@@ -81,7 +81,7 @@ class ErrorTypeTest extends TestCase
 
     public function test_get_exception_class_for_error_missing()
     {
-        $this->setExpectedException(MissingExceptionForErrorType::class, 'There is no custom exception for error of type "foo".');
+        $this->expectException(MissingExceptionForErrorType::class, 'There is no custom exception for error of type "foo".');
         ErrorType::getExceptionClassForError('foo');
     }
 
