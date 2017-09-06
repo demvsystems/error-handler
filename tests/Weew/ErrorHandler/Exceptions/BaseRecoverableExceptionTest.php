@@ -2,11 +2,13 @@
 
 namespace Tests\Weew\ErrorHandler\Exceptions;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Weew\ErrorHandler\Exceptions\NoticeException;
 
-class BaseRecoverableExceptionTest extends PHPUnit_Framework_TestCase {
-    public function test_getters() {
+class BaseRecoverableExceptionTest extends TestCase
+{
+    public function test_getters()
+    {
         $ex = new NoticeException('foo', 'bar', 'yolo', 'swag');
         $this->assertEquals('foo', $ex->getErrorCode());
         $this->assertEquals('bar', $ex->getErrorMessage());
@@ -14,7 +16,8 @@ class BaseRecoverableExceptionTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('swag', $ex->getErrorLine());
     }
 
-    public function test_is_recoverable() {
+    public function test_is_recoverable()
+    {
         $ex = new NoticeException('foo', 'bar', 'yolo', 'swag');
         $this->assertTrue($ex->isRecoverable());
     }

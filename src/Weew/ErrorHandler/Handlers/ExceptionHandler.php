@@ -2,7 +2,7 @@
 
 namespace Weew\ErrorHandler\Handlers;
 
-use Exception;
+use Throwable;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
@@ -35,11 +35,11 @@ class ExceptionHandler implements IExceptionHandler {
     }
 
     /**
-     * @param Exception $ex
+     * @param Throwable $ex
      *
      * @return bool
      */
-    public function supports(Exception $ex) {
+    public function supports(Throwable $ex) {
         $instanceof = get_class($ex) === $this->getExceptionClass();
         $extends = is_subclass_of($ex, $this->getExceptionClass());
 
@@ -47,11 +47,11 @@ class ExceptionHandler implements IExceptionHandler {
     }
 
     /**
-     * @param Exception $ex
+     * @param Throwable $ex
      *
      * @return bool
      */
-    public function handle(Exception $ex) {
+    public function handle(Throwable  $ex) {
         if ( ! $this->supports($ex)) {
             return false;
         }
@@ -110,13 +110,13 @@ class ExceptionHandler implements IExceptionHandler {
     }
 
     /**
-     * @param callable $handler
-     * @param Exception $exception
+     * @param callable  $handler
+     * @param Throwable $throwable
      *
      * @return mixed
      */
-    protected function invokeHandler(callable $handler, Exception $exception) {
-        return $handler($exception);
+    protected function invokeHandler(callable $handler, Throwable $throwable) {
+        return $handler($throwable);
     }
 
     /**

@@ -2,11 +2,13 @@
 
 namespace Tests\Weew\ErrorHandler\Exceptions;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Weew\ErrorHandler\Exceptions\CoreErrorException;
 
-class BaseFatalExceptionTest extends PHPUnit_Framework_TestCase {
-    public function test_getters() {
+class BaseFatalExceptionTest extends TestCase
+{
+    public function test_getters()
+    {
         $ex = new CoreErrorException('foo', 'bar', 'yolo', 'swag');
         $this->assertEquals('foo', $ex->getErrorCode());
         $this->assertEquals('bar', $ex->getErrorMessage());
@@ -14,7 +16,8 @@ class BaseFatalExceptionTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('swag', $ex->getErrorLine());
     }
 
-    public function test_is_recoverable() {
+    public function test_is_recoverable()
+    {
         $ex = new CoreErrorException('foo', 'bar', 'yolo', 'swag');
         $this->assertFalse($ex->isRecoverable());
     }

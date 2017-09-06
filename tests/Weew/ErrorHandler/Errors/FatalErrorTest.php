@@ -2,11 +2,13 @@
 
 namespace Tests\Weew\ErrorHandler\Errors;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Weew\ErrorHandler\Errors\FatalError;
 
-class FatalErrorTest extends PHPUnit_Framework_TestCase {
-    public function test_getters() {
+class FatalErrorTest extends TestCase
+{
+    public function test_getters()
+    {
         $error = new FatalError('foo', 'bar', 'yolo', 'swag');
         $this->assertEquals('foo', $error->getCode());
         $this->assertEquals('bar', $error->getMessage());
@@ -14,7 +16,8 @@ class FatalErrorTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals('swag', $error->getLine());
     }
 
-    public function test_is_recoverable() {
+    public function test_is_recoverable()
+    {
         $error = new FatalError('foo', 'bar', 'yolo', 'swag');
         $this->assertFalse($error->isRecoverable());
     }
