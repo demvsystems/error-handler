@@ -13,7 +13,7 @@
         <testsuite name="error-handler">
             <directory>./tests</directory>
             <exclude>
-                <directory>./tests/Weew/ErrorHandler/error_tests</directory>
+                <directory>Weew/ErrorHandler/error_tests</directory>
             </exclude>
         </testsuite>
     </testsuites>
