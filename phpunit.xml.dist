@@ -12,6 +12,9 @@
     <testsuites>
         <testsuite name="error-handler">
             <directory>./tests</directory>
+            <exclude>
+                <directory>error_tests</directory>
+            </exclude>
         </testsuite>
     </testsuites>
     <filter>
