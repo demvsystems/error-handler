@@ -2,7 +2,7 @@
 
 namespace Tests\Weew\ErrorHandler;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Tests\Weew\ErrorHandler\Stubs\FakeErrorConverter;
 use Weew\ErrorHandler\ErrorConverter;
 use Weew\ErrorHandler\ErrorHandler;
@@ -11,54 +11,61 @@ use Weew\ErrorHandler\ErrorType;
 use Weew\ErrorHandler\Exceptions\ErrorException;
 use Weew\ErrorHandler\Exceptions\ParseException;
 
-class ErrorConverterTest extends PHPUnit_Framework_TestCase {
-    public function test_create_recoverable_error_and_call_handler() {
+class ErrorConverterTest extends TestCase
+{
+    public function test_create_recoverable_error_and_call_handler()
+    {
         $converter = new ErrorConverter();
-        $handler = new ErrorHandler(true);
-        $this->setExpectedException(ErrorException::class);
+        $handler   = new ErrorHandler(true);
+        $this->expectException(ErrorException::class);
         $converter->createRecoverableErrorAndCallHandler(
             $handler, ErrorType::ERROR, 'foo', 'bar', 'yolo'
         );
     }
 
-    public function test_extract_fatal_error_and_call_handler() {
+    public function test_extract_fatal_error_and_call_handler()
+    {
         $converter = new ErrorConverter();
-        $handler = new ErrorHandler(true);
+        $handler   = new ErrorHandler(true);
         $this->assertNull(
             $converter->extractFatalErrorAndCallHandler($handler)
         );
     }
 
-    public function test_extract_fatal_error_and_call_handler_with_fake_error() {
+    public function test_extract_fatal_error_and_call_handler_with_fake_error()
+    {
         $converter = new FakeErrorConverter();
-        $handler = new ErrorHandler(true);
-        $this->setExpectedException(ParseException::class);
+        $handler   = new ErrorHandler(true);
+        $this->expectException(ParseException::class);
 
         ob_start();
         $converter->extractFatalErrorAndCallHandler($handler);
     }
 
-    public function test_extract_fatal_error_and_call_handler_with_recoverable_error() {
+    public function test_extract_fatal_error_and_call_handler_with_recoverable_error()
+    {
         $converter = new FakeErrorConverter(ErrorType::NOTICE);
-        $handler = new ErrorHandler(true);
+        $handler   = new ErrorHandler(true);
         $this->assertNull($converter->extractFatalErrorAndCallHandler($handler));
     }
-    
-    public function test_convert_error_to_exception_and_call_handler() {
+
+    public function test_convert_error_to_exception_and_call_handler()
+    {
         $converter = new ErrorConverter();
-        $handler = new ErrorHandler(true);
-        $error = new RecoverableError(
+        $handler   = new ErrorHandler(true);
+        $error     = new RecoverableError(
             ErrorType::ERROR, 'foo', 'bar', 'yolo'
         );
 
-        $this->setExpectedException(ErrorException::class);
+        $this->expectException(ErrorException::class);
         $converter->convertErrorToExceptionAndCallHandler($handler, $error);
     }
 
-    public function test_convert_error_to_exception_and_call_handler_and_handle_exception() {
+    public function test_convert_error_to_exception_and_call_handler_and_handle_exception()
+    {
         $converter = new ErrorConverter();
-        $handler = new ErrorHandler(true);
-        $handler->addExceptionHandler(function(ErrorException $ex) {
+        $handler   = new ErrorHandler(true);
+        $handler->addExceptionHandler(function (ErrorException $ex) {
             return true;
         });
         $error = new RecoverableError(

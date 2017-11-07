@@ -1,15 +1,12 @@
 language: php
-
 php:
-  - 5.5
-  - 5.6
-
-before_script:
-  - composer install --prefer-source --no-interaction --dev
-
+  - 7.0
+  - 7.1
+  - nightly
+before_install:
+   - if [[ $TRAVIS_PHP_VERSION != "nightly" ]]; then phpenv config-rm xdebug.ini; fi
+install:
+  - composer self-update
+  - composer install --prefer-dist --optimize-autoloader --ignore-platform-reqs
 script:
-  - mkdir -p build/logs
-  - phpunit --coverage-clover build/logs/clover.xml
-
-after_script:
-  - php vendor/bin/coveralls -v
+  - composer test

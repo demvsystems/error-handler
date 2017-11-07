@@ -2,17 +2,17 @@
 
 namespace Tests\Weew\ErrorHandler\Stubs;
 
-use Exception;
+use Throwable;
 use Weew\ErrorHandler\Handlers\IExceptionHandler;
 
 class FakeExceptionHandler implements IExceptionHandler {
     private $enabled = true;
 
-    public function supports(Exception $ex) {
+    public function supports(Throwable $ex) {
         return $ex instanceof FooException;
     }
 
-    public function handle(Exception $ex) {
+    public function handle(Throwable $ex) {
         return true;
     }
 

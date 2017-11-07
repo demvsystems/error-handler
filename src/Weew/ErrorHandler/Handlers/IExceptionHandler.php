@@ -10,22 +10,22 @@ interface IExceptionHandler {
      *
      * @return bool
      */
-    function supports(Throwable $ex);
+    public function supports(Throwable $ex);
 
     /**
      * @param Throwable $ex
      *
      * @return bool
      */
-    function handle(Throwable $ex);
+    public function handle(Throwable $ex);
 
     /**
      * @return bool
      */
-    function isEnabled();
+    public function isEnabled();
 
     /**
      * @param bool $enabled
      */
-    function setEnabled($enabled);
+    public function setEnabled($enabled);
 }
