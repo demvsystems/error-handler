@@ -67,6 +67,13 @@ interface IErrorHandler {
     function addExceptionHandler($handler);
 
     /**
+     * Prepend an error handler for exceptions.
+     *
+     * @param callable|IExceptionHandler $handler
+     */
+    function prependExceptionHandler($handler);
+
+    /**
      * Add an error handler for all kinds of native PHP errors.
      *
      * @param callable|INativeErrorHandler $handler
