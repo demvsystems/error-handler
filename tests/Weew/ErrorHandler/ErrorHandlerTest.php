@@ -99,7 +99,6 @@ class ErrorHandlerTest extends TestCase
         $this->assertOrder($handler, [1, 2, 3], 'Die ersten drei werden normal hinzugefügt');
 
         $handler->prependExceptionHandler(FakeExceptionHandler::make(42));
-        $this->assertCount(4, $handler->getExceptionHandlers());
         $this->assertOrder($handler, [42, 1, 2, 3], '42 sollte jetzt am Anfang sein');
 
         $handler->prependExceptionHandler(FakeExceptionHandler::make(199));
@@ -107,7 +106,6 @@ class ErrorHandlerTest extends TestCase
         $this->assertOrder($handler, [199, 42, 1, 2, 3], '199 sollte jetzt am Anfang sein');
 
         $handler->addExceptionHandler(FakeExceptionHandler::make(4));
-        $this->assertCount(5, $handler->getExceptionHandlers());
         $this->assertOrder($handler, [199, 42, 1, 2, 3, 4], 'Man kann auch weiterhin welche anhängen');
     }
 
