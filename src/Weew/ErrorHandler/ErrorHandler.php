@@ -7,11 +7,12 @@ use Throwable;
 use Weew\ErrorHandler\Errors\IError;
 use Weew\ErrorHandler\Exceptions\InvalidHandlerType;
 use Weew\ErrorHandler\Handlers\ExceptionHandler;
-use Weew\ErrorHandler\Handlers\NativeErrorHandler;
 use Weew\ErrorHandler\Handlers\IExceptionHandler;
 use Weew\ErrorHandler\Handlers\INativeErrorHandler;
+use Weew\ErrorHandler\Handlers\NativeErrorHandler;
 
-class ErrorHandler implements IErrorHandler {
+class ErrorHandler implements IErrorHandler
+{
     /**
      * @var ErrorConverter
      */
@@ -62,7 +63,8 @@ class ErrorHandler implements IErrorHandler {
      *
      * @param bool $convertErrorsToExceptions
      */
-    public function __construct($convertErrorsToExceptions = false) {
+    public function __construct($convertErrorsToExceptions = false)
+    {
         $this->errorConverter = $this->createErrorConverter();
         $this->convertErrorsToExceptions($convertErrorsToExceptions);
     }
@@ -70,7 +72,8 @@ class ErrorHandler implements IErrorHandler {
     /**
      * Enable exception, error and fatal error handling.
      */
-    public function enable() {
+    public function enable()
+    {
         $this->enableExceptionHandling();
         $this->enableErrorHandling();
     }
@@ -78,7 +81,8 @@ class ErrorHandler implements IErrorHandler {
     /**
      * Enable exception handling.
      */
-    public function enableExceptionHandling() {
+    public function enableExceptionHandling()
+    {
         if ($this->isExceptionHandlingEnabled()) {
             return;
         }
@@ -90,7 +94,8 @@ class ErrorHandler implements IErrorHandler {
     /**
      * Enable handling of native PHP errors.
      */
-    public function enableErrorHandling() {
+    public function enableErrorHandling()
+    {
         $this->enableRecoverableErrorHandling();
         $this->enableFatalErrorHandling();
     }
@@ -98,7 +103,8 @@ class ErrorHandler implements IErrorHandler {
     /**
      * Enable regular error handling.
      */
-    public function enableRecoverableErrorHandling() {
+    public function enableRecoverableErrorHandling()
+    {
         if ($this->isRecoverableErrorHandlingEnabled()) {
             return;
         }
@@ -117,7 +123,8 @@ class ErrorHandler implements IErrorHandler {
     /**
      * Enable fatal/non-recoverable error handling.
      */
-    public function enableFatalErrorHandling() {
+    public function enableFatalErrorHandling()
+    {
         if ($this->isFatalErrorHandlingEnabled()) {
             return;
         }
@@ -132,36 +139,41 @@ class ErrorHandler implements IErrorHandler {
     /**
      * @return bool
      */
-    public function isExceptionHandlingEnabled() {
+    public function isExceptionHandlingEnabled()
+    {
         return $this->isExceptionHandlingEnabled;
     }
 
     /**
      * @return bool
      */
-    public function isErrorHandlingEnabled() {
+    public function isErrorHandlingEnabled()
+    {
         return $this->isRecoverableErrorHandlingEnabled()
-        && $this->isFatalErrorHandlingEnabled();
+            && $this->isFatalErrorHandlingEnabled();
     }
 
     /**
      * @return bool
      */
-    public function isRecoverableErrorHandlingEnabled() {
+    public function isRecoverableErrorHandlingEnabled()
+    {
         return $this->isRecoverableErrorHandlingEnabled;
     }
 
     /**
      * @return bool
      */
-    public function isFatalErrorHandlingEnabled() {
+    public function isFatalErrorHandlingEnabled()
+    {
         return $this->isFatalErrorHandlingEnabled;
     }
 
     /**
      * @return bool
      */
-    public function isConvertingErrorsToExceptions() {
+    public function isConvertingErrorsToExceptions()
+    {
         return $this->isConvertingErrorsToExceptions;
     }
 
@@ -172,19 +184,30 @@ class ErrorHandler implements IErrorHandler {
      *
      * @throws InvalidHandlerType
      */
-    public function addExceptionHandler($handler) {
-        if ( ! $handler instanceof IExceptionHandler && ! is_callable($handler)) {
-            throw new InvalidHandlerType(
-                s('Exception handler must be a callable or an instance of %s.',
-                    IExceptionHandler::class)
-            );
-        }
-
-        if (is_callable($handler)) {
-            $handler = $this->createExceptionHandler($handler);
-        }
+    public function addExceptionHandler($handler)
+    {
+        $handler = $this->createHandlerForException($handler);
 
         $this->exceptionHandlers[] = $handler;
+    }
+
+    /**
+     * Prepend an error handler for exceptions.
+     *
+     * @param callable|IExceptionHandler $handler
+     *
+     * @throws InvalidHandlerType
+     */
+    public function prependExceptionHandler($handler)
+    {
+
+
+        $handler = $this->createHandlerForException($handler);
+
+        $wtf = array_reverse($this->exceptionHandlers);
+        $wtf[] = $handler;
+
+        $this->exceptionHandlers = array_reverse($wtf);
     }
 
     /**
@@ -194,7 +217,8 @@ class ErrorHandler implements IErrorHandler {
      *
      * @throws InvalidHandlerType
      */
-    public function addErrorHandler($handler) {
+    public function addErrorHandler($handler)
+    {
         $this->addRecoverableErrorHandler($handler);
         $this->addFatalErrorHandler($handler);
     }
@@ -206,8 +230,9 @@ class ErrorHandler implements IErrorHandler {
      *
      * @throws InvalidHandlerType
      */
-    public function addRecoverableErrorHandler($handler) {
-        if ( ! $handler instanceof INativeErrorHandler && ! is_callable($handler)) {
+    public function addRecoverableErrorHandler($handler)
+    {
+        if (!$handler instanceof INativeErrorHandler && !is_callable($handler)) {
             throw new InvalidHandlerType(
                 s('Recoverable error handler must be a callable or an instance of %s.',
                     INativeErrorHandler::class)
@@ -228,8 +253,9 @@ class ErrorHandler implements IErrorHandler {
      *
      * @throws InvalidHandlerType
      */
-    public function addFatalErrorHandler($handler) {
-        if ( ! $handler instanceof INativeErrorHandler && ! is_callable($handler)) {
+    public function addFatalErrorHandler($handler)
+    {
+        if (!$handler instanceof INativeErrorHandler && !is_callable($handler)) {
             throw new InvalidHandlerType(
                 s('Fatal error handler must be a callable or an instance of %s.',
                     INativeErrorHandler::class)
@@ -248,11 +274,12 @@ class ErrorHandler implements IErrorHandler {
      *
      * @throws Throwable
      */
-    public function handleException(Throwable $ex) {
+    public function handleException(Throwable $ex)
+    {
         foreach ($this->getExceptionHandlers() as $handler) {
             if ($handler->isEnabled()) {
                 try {
-                    if ( ! $handler->supports($ex)) {
+                    if (!$handler->supports($ex)) {
                         continue;
                     }
 
@@ -278,7 +305,8 @@ class ErrorHandler implements IErrorHandler {
     /**
      * @param IError $error
      */
-    public function handleError(IError $error) {
+    public function handleError(IError $error)
+    {
         if ($error->isRecoverable()) {
             $this->handleRecoverableError($error);
         } else {
@@ -291,7 +319,8 @@ class ErrorHandler implements IErrorHandler {
      *
      * @return bool|void
      */
-    public function handleRecoverableError(IError $error) {
+    public function handleRecoverableError(IError $error)
+    {
         // ignore error caused by a rethrown exception
         if ($this->ignoreRethrownException) {
             $this->ignoreRethrownException = false;
@@ -326,7 +355,8 @@ class ErrorHandler implements IErrorHandler {
      *
      * @return bool|void
      */
-    public function handleFatalError(IError $error) {
+    public function handleFatalError(IError $error)
+    {
         // ignore error caused by a rethrown exception
         if ($this->ignoreRethrownException) {
             $this->ignoreRethrownException = false;
@@ -361,7 +391,8 @@ class ErrorHandler implements IErrorHandler {
     /**
      * @param bool $convertErrorsToExceptions
      */
-    public function convertErrorsToExceptions($convertErrorsToExceptions) {
+    public function convertErrorsToExceptions($convertErrorsToExceptions)
+    {
         $this->isConvertingErrorsToExceptions = $convertErrorsToExceptions;
 
         if ($convertErrorsToExceptions) {
@@ -372,21 +403,24 @@ class ErrorHandler implements IErrorHandler {
     /**
      * @return IExceptionHandler[]
      */
-    public function getExceptionHandlers() {
+    public function getExceptionHandlers()
+    {
         return $this->exceptionHandlers;
     }
 
     /**
      * @return INativeErrorHandler[]
      */
-    public function getRecoverableErrorHandlers() {
+    public function getRecoverableErrorHandlers()
+    {
         return $this->recoverableErrorHandlers;
     }
 
     /**
      * @return INativeErrorHandler[]
      */
-    public function getFatalErrorHandlers() {
+    public function getFatalErrorHandlers()
+    {
         return $this->fatalErrorHandlers;
     }
 
@@ -395,7 +429,8 @@ class ErrorHandler implements IErrorHandler {
      *
      * @return IExceptionHandler
      */
-    protected function createExceptionHandler(callable $handler) {
+    protected function createExceptionHandler(callable $handler)
+    {
         return new ExceptionHandler($handler);
     }
 
@@ -404,14 +439,36 @@ class ErrorHandler implements IErrorHandler {
      *
      * @return INativeErrorHandler
      */
-    protected function createNativeErrorHandler(callable $handler) {
+    protected function createNativeErrorHandler(callable $handler)
+    {
         return new NativeErrorHandler($handler);
     }
 
     /**
      * @return ErrorConverter
      */
-    protected function createErrorConverter() {
+    protected function createErrorConverter()
+    {
         return new ErrorConverter();
+    }
+
+    /**
+     * @param $handler
+     * @return callable|ExceptionHandler|IExceptionHandler
+     * @throws InvalidHandlerType
+     */
+    private function createHandlerForException($handler)
+    {
+        if (!$handler instanceof IExceptionHandler && !is_callable($handler)) {
+            throw new InvalidHandlerType(
+                s('Exception handler must be a callable or an instance of %s.',
+                    IExceptionHandler::class)
+            );
+        }
+
+        if (is_callable($handler)) {
+            $handler = $this->createExceptionHandler($handler);
+        }
+        return $handler;
     }
 }

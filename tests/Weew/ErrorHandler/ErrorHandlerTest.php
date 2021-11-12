@@ -83,6 +83,37 @@ class ErrorHandlerTest extends TestCase
         $this->assertTrue($handler->isErrorHandlingEnabled());
     }
 
+    /**
+     * @throws InvalidHandlerType
+     */
+    public function test_prepend_and_get_exception_handlers()
+    {
+        $handler = new ErrorHandler();
+
+        $this->assertEmpty($handler->getExceptionHandlers());
+
+        $handler->addExceptionHandler(new FakeExceptionHandler(1));
+
+        $this->assertCount(1, $handler->getExceptionHandlers());
+
+        $handler->addExceptionHandler(new FakeExceptionHandler(2));
+        $this->assertCount(2, $handler->getExceptionHandlers());
+        $handler->addExceptionHandler(new FakeExceptionHandler(3));
+        $this->assertCount(3, $handler->getExceptionHandlers());
+//        $this->assertOrder($handler, [1, 2, 3], 'Die ersten drei werden normal hinzugefügt');
+
+
+
+
+        $handler->prependExceptionHandler(new FakeExceptionHandler(42));
+        $this->assertCount(4, $handler->getExceptionHandlers());
+        $this->assertOrder($handler, [42, 1, 2, 3], '42 sollte jetzt am Anfang sein');
+        $handler->prependExceptionHandler(new FakeExceptionHandler(199));
+        $this->assertCount(5, $handler->getExceptionHandlers());
+        $this->assertOrder($handler, [199, 42, 1, 2, 3], '199 sollte jetzt am Anfang sein');
+    }
+
+
     public function test_add_and_get_exception_handlers()
     {
         $handler = new ErrorHandler();
@@ -280,7 +311,7 @@ class ErrorHandlerTest extends TestCase
 
     public function test_handle_error_with_fatal_error()
     {
-        $handler    = new ErrorHandler();
+        $handler = new ErrorHandler();
         $fatalError = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
 
         ob_start();
@@ -292,7 +323,7 @@ class ErrorHandlerTest extends TestCase
 
     public function test_handle_error_with_recoverable_error()
     {
-        $handler          = new ErrorHandler();
+        $handler = new ErrorHandler();
         $recoverableError = new RecoverableError(ErrorType::ERROR, 'foo', 'bar', 'baz');
 
         $handler->handleError($recoverableError);
@@ -302,10 +333,10 @@ class ErrorHandlerTest extends TestCase
 
     public function test_unhandled_exception_with_error_handling_enabled()
     {
-        $handler          = new ErrorHandler();
-        $exception        = new Exception();
+        $handler = new ErrorHandler();
+        $exception = new Exception();
         $recoverableError = new RecoverableError(ErrorType::ERROR, 'foo', 'bar', 'baz');
-        $fatalError       = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
+        $fatalError = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
 
         try {
             $handler->handleException($exception);
@@ -319,7 +350,7 @@ class ErrorHandlerTest extends TestCase
 
     public function test_exception_from_exception_handler_is_handled()
     {
-        $handler   = new ErrorHandler();
+        $handler = new ErrorHandler();
         $exception = new Exception();
 
         $handler->addExceptionHandler(function (Exception $ex) {
@@ -334,7 +365,7 @@ class ErrorHandlerTest extends TestCase
 
     public function test_fatal_error_from_fatal_error_handler_is_handled()
     {
-        $handler    = new ErrorHandler();
+        $handler = new ErrorHandler();
         $fatalError = new FatalError(ErrorType::PARSE, 'foo', 'bar', 'baz');
 
         $handler->addFatalErrorHandler(function (IError $error) {
@@ -351,7 +382,7 @@ class ErrorHandlerTest extends TestCase
 
     public function test_exception_from_recoverable_error_handler_is_handled()
     {
-        $handler          = new ErrorHandler();
+        $handler = new ErrorHandler();
         $recoverableError = new RecoverableError(ErrorType::ERROR, 'foo', 'bar', 'baz');
 
         $handler->addRecoverableErrorHandler(function (IError $error) {
@@ -362,5 +393,19 @@ class ErrorHandlerTest extends TestCase
             $handler->handleRecoverableError($recoverableError);
         } catch (Exception $ex) {
         }
+    }
+
+    /**
+     * @param ErrorHandler $handler
+     * @param array $expectedOrder
+     * @return void
+     */
+    private function assertOrder(ErrorHandler $handler, array $expectedOrder, string $message = '')
+    {
+        $ids = array_map(function (FakeExceptionHandler $fh) {
+            return $fh->id;
+        }, $handler->getExceptionHandlers());
+
+        $this->assertEquals($expectedOrder, $ids, $message);
     }
 }

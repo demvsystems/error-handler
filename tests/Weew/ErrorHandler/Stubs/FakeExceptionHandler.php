@@ -6,6 +6,13 @@ use Throwable;
 use Weew\ErrorHandler\Handlers\IExceptionHandler;
 
 class FakeExceptionHandler implements IExceptionHandler {
+    public $id;
+
+    public function __construct($id = 1)
+    {
+        $this->id = $id;
+    }
+
     private $enabled = true;
 
     public function supports(Throwable $ex) {
