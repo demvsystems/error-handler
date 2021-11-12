@@ -8,6 +8,14 @@ use Weew\ErrorHandler\Handlers\IExceptionHandler;
 class FakeExceptionHandler implements IExceptionHandler {
     public $id;
 
+    /**
+     * @return int|mixed
+     */
+    public static function make(int $id): self
+    {
+        return new self($id);
+    }
+
     public function __construct($id = 1)
     {
         $this->id = $id;

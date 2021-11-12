@@ -92,25 +92,36 @@ class ErrorHandlerTest extends TestCase
 
         $this->assertEmpty($handler->getExceptionHandlers());
 
-        $handler->addExceptionHandler(new FakeExceptionHandler(1));
+        $handler->addExceptionHandler(FakeExceptionHandler::make(1));
+        $handler->addExceptionHandler(FakeExceptionHandler::make(2));
+        $handler->addExceptionHandler(FakeExceptionHandler::make(3));
 
-        $this->assertCount(1, $handler->getExceptionHandlers());
+        $this->assertOrder($handler, [1, 2, 3], 'Die ersten drei werden normal hinzugefügt');
 
-        $handler->addExceptionHandler(new FakeExceptionHandler(2));
-        $this->assertCount(2, $handler->getExceptionHandlers());
-        $handler->addExceptionHandler(new FakeExceptionHandler(3));
-        $this->assertCount(3, $handler->getExceptionHandlers());
-//        $this->assertOrder($handler, [1, 2, 3], 'Die ersten drei werden normal hinzugefügt');
-
-
-
-
-        $handler->prependExceptionHandler(new FakeExceptionHandler(42));
+        $handler->prependExceptionHandler(FakeExceptionHandler::make(42));
         $this->assertCount(4, $handler->getExceptionHandlers());
         $this->assertOrder($handler, [42, 1, 2, 3], '42 sollte jetzt am Anfang sein');
-        $handler->prependExceptionHandler(new FakeExceptionHandler(199));
+
+        $handler->prependExceptionHandler(FakeExceptionHandler::make(199));
         $this->assertCount(5, $handler->getExceptionHandlers());
         $this->assertOrder($handler, [199, 42, 1, 2, 3], '199 sollte jetzt am Anfang sein');
+
+        $handler->addExceptionHandler(FakeExceptionHandler::make(4));
+        $this->assertCount(5, $handler->getExceptionHandlers());
+        $this->assertOrder($handler, [199, 42, 1, 2, 3, 4], 'Man kann auch weiterhin welche anhängen');
+    }
+
+    public function test_prepend_works_on_empty()
+    {
+        $handler = new ErrorHandler();
+        $this->assertEmpty($handler->getExceptionHandlers());
+
+        $handler->prependExceptionHandler(FakeExceptionHandler::make(1));
+        $handler->prependExceptionHandler(FakeExceptionHandler::make(2));
+        $handler->prependExceptionHandler(FakeExceptionHandler::make(3));
+
+        $this->assertOrder($handler, [3, 2, 1]);
+
     }
 
 
@@ -395,11 +406,6 @@ class ErrorHandlerTest extends TestCase
         }
     }
 
-    /**
-     * @param ErrorHandler $handler
-     * @param array $expectedOrder
-     * @return void
-     */
     private function assertOrder(ErrorHandler $handler, array $expectedOrder, string $message = '')
     {
         $ids = array_map(function (FakeExceptionHandler $fh) {
