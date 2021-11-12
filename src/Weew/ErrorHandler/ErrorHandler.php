@@ -200,14 +200,8 @@ class ErrorHandler implements IErrorHandler
      */
     public function prependExceptionHandler($handler)
     {
-
-
         $handler = $this->createHandlerForException($handler);
-
-        $wtf = array_reverse($this->exceptionHandlers);
-        $wtf[] = $handler;
-
-        $this->exceptionHandlers = array_reverse($wtf);
+        array_unshift($this->exceptionHandlers, $handler);
     }
 
     /**
