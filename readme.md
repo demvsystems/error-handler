@@ -78,7 +78,7 @@ All PHP errors are converted to an instance of `IError`. It serves as a holder f
 // is this kind of error recoverable or not
 $error->isRecoverable();
 
-// get error type (E_WARNING, E_STRICT, etc.)
+// get error type (E_WARNING, E_NOTICE, etc.)
 $error->getCode();
 
 // get error message
@@ -206,7 +206,7 @@ If you want to deal with all PHP errors that are converted to an exception in th
 
 ```php
 $errorHandler->addExceptionHandler(function(IErrorException $ex) {
-    // all kinds of php errors (E_WARNING, E_STRICT, etc.) can now be handled
+    // all kinds of php errors (E_WARNING, E_NOTICE, etc.) can now be handled
     // here in form of an exception
     return true;
 });
@@ -225,7 +225,6 @@ Error type | Exception name
 `E_NOTICE` | [NoticeException](https://github.com/weew/error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/NoticeException.php)
 `E_PARSE` | [ParseException](https://github.com/weew/error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/ParseException.php)
 `E_RECOVERABLE_ERROR` | [RecoverableErrorException](https://github.com/weew/error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/RecoverableErrorException.php)
-`E_STRICT` | [StrictException](https://github.com/weew/error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/StrictException.php)
 `E_USER_DEPRECATED` | [UserDeprecatedException](https://github.com/weew/error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserDeprecatedException.php)
 `E_USER_ERROR` | [UserErrorException](https://github.com/weew/error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserErrorException.php)
 `E_USER_NOTICE` | [UserNoticeException](https://github.com/weew/error-handler/blob/master/src/Weew/ErrorHandler/Exceptions/UserNoticeException.php)
@@ -235,7 +234,7 @@ Error type | Exception name
 All exceptions listed above share the same `IErrorException` interface that offers some getters to access the error information.
 
 ```php
-// get numeric representation of the error type (E_WARNING, E_STRICT, etc.)
+// get numeric representation of the error type (E_WARNING, E_NOTICE, etc.)
 $ex->getErrorCode();
 
 // get error message
