@@ -13,7 +13,6 @@ use Weew\ErrorHandler\Exceptions\MissingExceptionForErrorType;
 use Weew\ErrorHandler\Exceptions\NoticeException;
 use Weew\ErrorHandler\Exceptions\ParseException;
 use Weew\ErrorHandler\Exceptions\RecoverableErrorException;
-use Weew\ErrorHandler\Exceptions\StrictException;
 use Weew\ErrorHandler\Exceptions\UserDeprecatedException;
 use Weew\ErrorHandler\Exceptions\UserErrorException;
 use Weew\ErrorHandler\Exceptions\UserNoticeException;
@@ -46,12 +45,6 @@ class ErrorType {
      * course of running a script.
      */
     const NOTICE = E_NOTICE;
-
-    /**
-     * Enable to have PHP suggest changes to your code which will
-     * ensure the best interoperability and forward compatibility of your code.
-     */
-    const STRICT = E_STRICT;
 
     /**
      * Run-time notices. Enable this to receive warnings about code that
@@ -132,7 +125,7 @@ class ErrorType {
      */
     public static function getFatalErrors() {
         return [
-            self::ERROR, self::PARSE, self::STRICT,
+            self::ERROR, self::PARSE,
             self::CORE_ERROR, self::CORE_WARNING,
             self::COMPILE_ERROR, self::COMPILE_WARNING,
         ];
@@ -172,7 +165,6 @@ class ErrorType {
             self::USER_ERROR => 'E_USER_ERROR',
             self::USER_WARNING => 'E_USER_WARNING',
             self::USER_NOTICE => 'E_USER_NOTICE',
-            self::STRICT => 'E_STRICT',
             self::RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
             self::DEPRECATED => 'E_DEPRECATED',
             self::USER_DEPRECATED => 'E_USER_DEPRECATED',
@@ -213,7 +205,6 @@ class ErrorType {
             self::USER_ERROR => UserErrorException::class,
             self::USER_WARNING => UserWarningException::class,
             self::USER_NOTICE => UserNoticeException::class,
-            self::STRICT => StrictException::class,
             self::RECOVERABLE_ERROR => RecoverableErrorException::class,
             self::DEPRECATED => DeprecatedException::class,
             self::USER_DEPRECATED => UserDeprecatedException::class,
